@@ -1,0 +1,44 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "contact": {
+            "email": "not@vailable"
+        },
+        "description": "This API describes some operations for monitoring the status of the digital forge.",
+        "license": {
+            "name": "MIT",
+            "url": "https://github.com/jdeyton/forge-keeper/blob/master/LICENSE"
+        },
+        "title": "Forge Keeper",
+        "version": "1.0.0"
+    },
+    "components": {
+        "parameters": {},
+        "schemas": {},
+        "securitySchemes": {
+            "forge-auth": {
+                "type": "oauth2",
+                "flows": {
+                    "authorizationCode": {
+                        "authorizationUrl": "https://mendicant-bias.arcturus.forge.digital/auth",
+                        "tokenUrl": "https://mendicant-bias.arcturus.forge.digital/auth.access",
+                        "scopes": {
+                            "write:drone": "drones do the work"
+                        }
+                    },
+                    "password": {
+                        "tokenUrl": "https://guilty-spark.arcturus.forge.digital/auth",
+                        "scopes": {
+                            "read:monitor": "monitors keep watch"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "paths": {},
+    "servers": [
+        { "url": "https://guilty-spark.arcturus.forge.digital" }
+    ],
+    "tags": []
+}
