@@ -14,7 +14,105 @@
     },
     "components": {
         "parameters": {},
-        "schemas": {},
+        "responses": {
+            "AccessDenied": {
+                "description": "Insufficient privileges. Access denied."
+            },
+            "InvalidRequest": {
+                "description": "Request not understood."
+            },
+            "UnexpectedError": {
+                "description": "Unexpected error encountered.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int32"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "schemas": {
+            "EnvironmentalIndex": {
+                "type": "string",
+                "enum": [
+                    "relative humidity",
+                    "temperature"
+                ]
+            },
+            "FloatSeries": {
+                "type": "object",
+                "properties": {
+                    "events": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "time": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "value": {
+                                    "type": "number",
+                                    "format": "float"
+                                }
+                            }
+                        }
+                    },
+                    "index": {
+                        "type": "string"
+                    }
+                },
+                "discriminator": {
+                    "propertyName": "index",
+                    "mapping": {
+                        "humidity": "HumiditySeries",
+                        "temperature": "TemperatureSeries"
+                    }
+                }
+            },
+            "HumiditySeries": {
+                "allOf": [
+                    { 
+                        "$ref": "#/components/schemas/FloatSeries"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "units": {
+                                "type": "string",
+                                "enum": ["%RH"]
+                            }
+                        }
+                    }
+                ]
+            },
+            "TemperatureSeries": {
+                "allOf": [
+                    { 
+                        "$ref": "#/components/schemas/FloatSeries"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "units": {
+                                "type": "string",
+                                "enum": ["C"]
+                            }
+                        }
+                    }
+                ]
+            }
+        },
         "securitySchemes": {
             "forge-auth": {
                 "type": "oauth2",
@@ -36,9 +134,49 @@
             }
         }
     },
-    "paths": {},
+    "paths": {
+        "/env/query": {
+            "get": {
+                "tags": [
+                    "environment"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Environmental query successful.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "anyOf": [
+                                            { "$ref": "#/components/schemas/HumiditySeries" },
+                                            { "$ref": "#/components/schemas/TemperatureSeries" }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AccessDenied"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/env/report": {}
+    },
     "servers": [
         { "url": "https://guilty-spark.arcturus.forge.digital" }
     ],
-    "tags": []
+    "tags": [
+        {
+          "name": "environment"
+        }
+    ]
 }
