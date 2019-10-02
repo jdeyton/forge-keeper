@@ -137,8 +137,59 @@
     "paths": {
         "/env/query": {
             "get": {
+                "summary": "Query an environmental index.",
+                "description": "Authorized entities may query samples from one or more environmental data indexes.",
                 "tags": [
                     "environment"
+                ],
+                "parameters": [
+                    {
+                        "name": "from",
+                        "description": "The start of the range for queried data. Default: 30 days prior",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "description": "The end of the range for queried data. Default: now",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "rate",
+                        "description": "The frequency of queried data, in minutes.",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [1, 5, 15, 30, 60],
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "indexes",
+                        "description": "The selection of data indexes to query.",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": ["humidity", "temperature"]
+                            },
+                            "default": ["humidity", "temperature"],
+                            "minItems": 1,
+                            "maxItems": 2
+                        }
+                    }
                 ],
                 "responses": {
                     "200": {
