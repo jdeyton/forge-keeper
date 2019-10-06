@@ -111,6 +111,25 @@
                         }
                     }
                 ]
+            },
+            "Package": {
+                "type": "object",
+                "properties": {
+                    "source": {
+                        "type": "string",
+                        "description": "The construct that is the source of the data."
+                    },
+                    "content": {
+                        "type": "array",
+                        "description": "The collected data content. Includes one or more indexes.",
+                        "items": {
+                            "anyOf": [
+                                { "$ref": "#/components/schemas/HumiditySeries" },
+                                { "$ref": "#/components/schemas/TemperatureSeries" }
+                            ]
+                        }
+                    }
+                }
             }
         },
         "securitySchemes": {
@@ -220,7 +239,39 @@
                 }
             }
         },
-        "/env/report": {}
+        "/env/report": {
+            "post": {
+                "summary": "Report data to an environmental index.",
+                "description": "Registered constructs may report data samples to one or more environmental data indexes.",
+                "tags": [
+                    "environment"
+                ],
+                "requestBody": {
+                    "description": "Data package to be added to the index.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Package"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Index update successful."
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AccessDenied"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        }
     },
     "servers": [
         { "url": "https://guilty-spark.arcturus.forge.digital" }
