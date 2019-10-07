@@ -13,7 +13,26 @@
         "version": "1.0.0"
     },
     "components": {
-        "parameters": {},
+        "parameters": {
+            "construct": {
+                "name": "construct",
+                "description": "The identifier of a construct for collecting data.",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "index": {
+                "name": "index",
+                "description": "The identifier of a data index or archive.",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
         "responses": {
             "AccessDenied": {
                 "description": "Insufficient privileges. Access denied."
@@ -42,107 +61,128 @@
             }
         },
         "schemas": {
-            "EnvironmentalIndex": {
-                "type": "string",
-                "enum": [
-                    "relative humidity",
-                    "temperature"
-                ]
-            },
-            "FloatSeries": {
+            "Construct": {
+                "description": "A registered entity for collecting data.",
                 "type": "object",
                 "properties": {
-                    "events": {
+                    "name": {
+                        "description": "The unique name for the construct.",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "A description of the construct.",
+                        "type": "string"
+                    },
+                    "indexes": {
+                        "description": "The data indexes this construct supports.",
                         "type": "array",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "time": {
-                                    "type": "string",
-                                    "format": "date-time"
-                                },
-                                "value": {
-                                    "type": "number",
-                                    "format": "float"
-                                }
-                            }
+                            "type": "string"
                         }
+                    }
+                },
+                "additionalProperties": {
+                    "description": "Additional properties of the construct.",
+                    "type": "string"
+                }
+            },
+            "Index": {
+                "description": "An index or archive of related data.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of the data index.",
+                        "type": "string"
                     },
-                    "index": {
+                    "description": {
+                        "description": "A description of the index.",
                         "type": "string"
                     }
                 },
-                "discriminator": {
-                    "propertyName": "index",
-                    "mapping": {
-                        "humidity": "HumiditySeries",
-                        "temperature": "TemperatureSeries"
+                "additionalProperties": {
+                    "description": "Additional properties of the index.",
+                    "type": "string"
+                }
+            },
+            "Event": {
+                "description": "A single data point.",
+                "type": "object",
+                "properties": {
+                    "time": {
+                        "description": "The timestamp of the event.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "detail": {
+                        "description": "The detail or value of the event.",
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": {
+                    "description": "Additional properties of the event.",
+                    "type": "string"
+                }
+            },
+            "EventSeries": {
+                "description": "A series or list of events.",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Event"
+                }
+            },
+            "EventCollection": {
+                "description": "A collection of events for one or more indexes.",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "index": {
+                              "description": "The associated data index.",
+                              "type": "string",
+                        },
+                        "events": {
+                            "$ref": "#/components/schemas/EventSeries"
+                        }
                     }
                 }
             },
-            "HumiditySeries": {
-                "allOf": [
-                    { 
-                        "$ref": "#/components/schemas/FloatSeries"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "units": {
-                                "type": "string",
-                                "enum": ["%RH"]
-                            }
-                        }
-                    }
-                ]
-            },
-            "TemperatureSeries": {
-                "allOf": [
-                    { 
-                        "$ref": "#/components/schemas/FloatSeries"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "units": {
-                                "type": "string",
-                                "enum": ["C"]
-                            }
-                        }
-                    }
-                ]
-            },
-            "Package": {
+            "TimeRange": {
+                "description": "An inclusive range of times.",
                 "type": "object",
                 "properties": {
-                    "source": {
+                    "start": {
                         "type": "string",
-                        "description": "The construct that is the source of the data."
+                        "format": "date-time"
                     },
-                    "content": {
-                        "type": "array",
-                        "description": "The collected data content. Includes one or more indexes.",
-                        "items": {
-                            "anyOf": [
-                                { "$ref": "#/components/schemas/HumiditySeries" },
-                                { "$ref": "#/components/schemas/TemperatureSeries" }
-                            ]
-                        }
+                    "end": {
+                        "type": "string",
+                        "format": "date-time"
                     }
                 }
             }
         },
         "securitySchemes": {
-            "forge-auth": {
+            "forge-actors": {
                 "type": "oauth2",
                 "flows": {
                     "authorizationCode": {
-                        "authorizationUrl": "https://mendicant-bias.arcturus.forge.digital/auth",
-                        "tokenUrl": "https://mendicant-bias.arcturus.forge.digital/auth.access",
+                        "authorizationUrl": "https://mendicant-bias.arcturus.forge.digital/auth/drone",
+                        "tokenUrl": "https://mendicant-bias.arcturus.forge.digital/auth/drone.access",
                         "scopes": {
                             "write:drone": "drones do the work"
                         }
                     },
+                    "password": {
+                        "tokenUrl": "https://mendicant-bias.arcturus.forge.digital/auth/master",
+                        "scopes": {
+                            "write:master": "forge masters"
+                        }
+                    }
+                }
+            },
+            "forge-auth": {
+                "type": "oauth2",
+                "flows": {
                     "password": {
                         "tokenUrl": "https://guilty-spark.arcturus.forge.digital/auth",
                         "scopes": {
@@ -154,74 +194,57 @@
         }
     },
     "paths": {
-        "/env/query": {
-            "get": {
-                "summary": "Query an environmental index.",
-                "description": "Authorized entities may query samples from one or more environmental data indexes.",
-                "tags": [
-                    "environment"
-                ],
-                "parameters": [
-                    {
-                        "name": "from",
-                        "description": "The start of the range for queried data. Default: 30 days prior",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date-time"
-                        }
-                    },
-                    {
-                        "name": "to",
-                        "description": "The end of the range for queried data. Default: now",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date-time"
-                        }
-                    },
-                    {
-                        "name": "rate",
-                        "description": "The frequency of queried data, in minutes.",
-                        "in": "header",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "enum": [1, 5, 15, 30, 60],
-                            "default": 15
-                        }
-                    },
-                    {
-                        "name": "indexes",
-                        "description": "The selection of data indexes to query.",
-                        "in": "header",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": ["humidity", "temperature"]
-                            },
-                            "default": ["humidity", "temperature"],
-                            "minItems": 1,
-                            "maxItems": 2
+        "/index/init": {
+            "post": {
+                "operationId": "addIndex",
+                "summary": "Create a new data index.",
+                "description": "Creates the necessary storage for a new data index",
+                "requestBody": {
+                    "description": "The index to be initialized.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Index"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "Environmental query successful.",
+                        "description": "Data index successfully initialized."
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AccessDenied"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                },
+                "security": [
+                    "forge-actors": [
+                        "write:master"
+                    ]
+                ],
+                "tags": ["master"]
+            }
+        },
+        "/indexes": {
+            "get": {
+                "operationId": "getIndexes",
+                "summary": "Get the list of indexes.",
+                "description": "Gets identifiers for all indexes.",
+                "responses": {
+                    "200": {
+                        "description": "List of index identifiers queried successfully.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "anyOf": [
-                                            { "$ref": "#/components/schemas/HumiditySeries" },
-                                            { "$ref": "#/components/schemas/TemperatureSeries" }
-                                        ]
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -236,29 +259,33 @@
                     "default": {
                         "$ref": "#/components/responses/UnexpectedError"
                     }
-                }
+                },
+                "security": [
+                    "forge-auth": [
+                        "read:monitor"
+                    ]
+                ],
+                "tags": ["monitor"]
             }
         },
-        "/env/report": {
-            "post": {
-                "summary": "Report data to an environmental index.",
-                "description": "Registered constructs may report data samples to one or more environmental data indexes.",
-                "tags": [
-                    "environment"
-                ],
-                "requestBody": {
-                    "description": "Data package to be added to the index.",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Package"
+        "/indexes/{index}": {
+            "parameters": [
+                "$ref": "#/components/parameters/index"
+            ],
+            "get": {
+                "operationId": "getIndex",
+                "summary": "Get info for a data index.",
+                "description": "Get details for a specific data index or archive.",
+                "responses": {
+                    "200": {
+                        "description": "Index details queried successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Index"
+                                }
                             }
                         }
-                    }
-                },
-                "responses": {
-                    "204": {
-                        "description": "Index update successful."
                     },
                     "400": {
                         "$ref": "#/components/responses/InvalidRequest"
@@ -269,7 +296,236 @@
                     "default": {
                         "$ref": "#/components/responses/UnexpectedError"
                     }
-                }
+                },
+                "security": [
+                    "forge-auth": [
+                        "read:monitor"
+                    ]
+                ],
+                "tags": ["monitor"]
+            }
+        },
+        "/construct/init": {
+            "post": {
+                "operationId": "addConstruct",
+                "summary": "Create a new data construct.",
+                "description": "Creates the necessary storage for a new data construct",
+                "requestBody": {
+                    "description": "The construct to be initialized.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Construct"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data construct successfully initialized."
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AccessDenied"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                },
+                "security": [
+                    "forge-actors": [
+                        "write:master"
+                    ]
+                ],
+                "tags": ["master"]
+            }
+        },
+        "/constructs": {
+            "get": {
+                "operationId": "getConstructs",
+                "summary": "Get the list of constructs.",
+                "description": "Gets identifiers for all registered constructs.",
+                "responses": {
+                    "200": {
+                        "description": "List of construct identifiers queried successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AccessDenied"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                },
+                "security": [
+                    "forge-auth": [
+                        "read:monitor"
+                    ]
+                ],
+                "tags": ["monitor"]
+            }
+        },
+        "/constructs/{construct}": {
+            "parameters": [
+                "$ref": "#/components/parameters/construct"
+            ],
+            "get": {
+                "operationId": "getConstruct",
+                "summary": "Get info for a data construct.",
+                "description": "Get details for a specific data construct.",
+                "responses": {
+                    "200": {
+                        "description": "Construct details queried successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Construct"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AccessDenied"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                },
+                "security": [
+                    "forge-auth": [
+                        "read:monitor"
+                    ]
+                ],
+                "tags": ["monitor"]
+            }
+        },
+        "/constructs/{construct}/report": {
+            "parameters": [
+                "$ref": "#/components/parameters/construct"
+            ],
+            "post": {
+                "operationId": "addEvents",
+                "summary": "Report or collect data from a construct for archival.",
+                "description": "Constructs use this path to provide data events to one or more indexes.",
+                "requestBody": {
+                    "description": "The data to be stored in the data index.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EventCollection"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Construct data reported successfully."
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AccessDenied"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                },
+                "security": [
+                    "forge-actors": [
+                        "write:drone"
+                    ]
+                ],
+                "tags": ["drone"]
+            }
+        },
+        "/constructs/{construct}/query": {
+            "parameters": [
+                "$ref": "#/components/parameters/construct"
+            ],
+            "get": {
+                "operationId": "getEvents",
+                "summary": "Get event data from a construct.",
+                "description": "Retrieves data collected by a particular construct for review.",
+                "parameters": [
+                    {
+                        "name": "indexes",
+                        "description": "The indexes for which data will be returned",
+                        "required": true,
+                        "in": "header",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "minItems": 1
+                        }
+                    },
+                    {
+                        "name": "range",
+                        "description": "The time period of data to be queried. If not specified, the last 30 days will be returned.",
+                        "required": false,
+                        "in": "header",
+                        "schema": {
+                            "$ref": "#/components/schemas/TimeRange"
+                        }
+                    },
+                    {
+                        "name": "rate",
+                        "description": "The sampling rate for the returned data.",
+                        "required": false,
+                        "in": "header",
+                        "schema": {
+                            "type": "integer",
+                            "enum": [1, 5, 15, 30, 60],
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Construct data retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventCollection"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AccessDenied"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                },
+                "security": [
+                    "forge-auth": [
+                        "read:monitor"
+                    ]
+                ],
+                "tags": ["monitor"]
             }
         }
     },
@@ -278,7 +534,16 @@
     ],
     "tags": [
         {
-          "name": "environment"
+            "name": "drone",
+            "description": "Drones collect data."
+        },
+        {
+            "name": "master",
+            "description": "Masters control roles and access."
+        },
+        {
+            "name": "monitor",
+            "description": "Monitors review data."
         }
     ]
 }
