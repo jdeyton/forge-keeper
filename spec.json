@@ -162,7 +162,7 @@
             }
         },
         "securitySchemes": {
-            "forge-actors": {
+            "forge_actors": {
                 "type": "oauth2",
                 "flows": {
                     "authorizationCode": {
@@ -180,7 +180,7 @@
                     }
                 }
             },
-            "forge-auth": {
+            "forge_auth": {
                 "type": "oauth2",
                 "flows": {
                     "password": {
@@ -224,7 +224,7 @@
                     }
                 },
                 "security": [
-                    {"forge-actors": ["write:master"]}
+                    {"forge_actors": ["write:master"]}
                 ],
                 "tags": ["master"]
             }
@@ -259,7 +259,7 @@
                     }
                 },
                 "security": [
-                    {"forge-auth": ["read:monitor"]}
+                    {"forge_auth": ["read:monitor"]}
                 ],
                 "tags": ["monitor"]
             }
@@ -294,7 +294,7 @@
                     }
                 },
                 "security": [
-                    {"forge-auth": ["read:monitor"]}
+                    {"forge_auth": ["read:monitor"]}
                 ],
                 "tags": ["monitor"]
             }
@@ -329,7 +329,7 @@
                     }
                 },
                 "security": [
-                    {"forge-actors": ["write:master"]}
+                    {"forge_actors": ["write:master"]}
                 ],
                 "tags": ["master"]
             }
@@ -364,7 +364,7 @@
                     }
                 },
                 "security": [
-                    {"forge-auth": ["read:monitor"]}
+                    {"forge_auth": ["read:monitor"]}
                 ],
                 "tags": ["monitor"]
             }
@@ -399,7 +399,7 @@
                     }
                 },
                 "security": [
-                    {"forge-auth": ["read:monitor"]}
+                    {"forge_auth": ["read:monitor"]}
                 ],
                 "tags": ["monitor"]
             }
@@ -437,7 +437,7 @@
                     }
                 },
                 "security": [
-                    {"forge-actors": ["write:drone"]}
+                    {"forge_actors": ["write:drone"]}
                 ],
                 "tags": ["drone"]
             }
@@ -507,7 +507,7 @@
                     }
                 },
                 "security": [
-                    {"forge-auth": ["read:monitor"]}
+                    {"forge_auth": ["read:monitor"]}
                 ],
                 "tags": ["monitor"]
             }
