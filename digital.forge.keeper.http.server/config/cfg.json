@@ -1,0 +1,8 @@
+{
+    "packageName": "digital.forge.keeper.http.server",
+    "packageVersion": "1.0.0",
+    "controllerPackage": "controller",
+    "serverPort": "65001",
+    "apiPackage": "api",
+    "modelPackage": "model"
+}
