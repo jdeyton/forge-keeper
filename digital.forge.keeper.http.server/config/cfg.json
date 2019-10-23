@@ -2,7 +2,14 @@
     "packageName": "digital.forge.keeper.http.server",
     "packageVersion": "1.0.0",
     "controllerPackage": "controller",
-    "serverPort": "65001",
     "apiPackage": "api",
-    "modelPackage": "model"
+    "modelPackage": "model",
+    "server": {
+        "host": "localhost",
+        "port": 65001
+    },
+    "implementation": {
+        "appFactoryModule": "digital.forge.keeper.http.server.core.factory.app",
+        "appFactoryClass": "AppFactory"
+    }
 }

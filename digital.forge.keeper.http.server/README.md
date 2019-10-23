@@ -27,6 +27,9 @@ java -jar /path/to/openapi-generator.jar generate -i /path/to/api.json -c config
 
 **Edits then must be made to the server code to return the expected contents.**
 
+* Remove the broken logic from the monitor controller.
+* Remove the `__init__.py` from the `...server` package.
+
 ## Running
 
 Currently, the server is run manually using a Python interpreter. Run the

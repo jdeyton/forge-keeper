@@ -6,19 +6,42 @@
 {{/supportPython2}}
 
 import connexion
-import flask_cors
 
 from {{packageName}} import encoder
+{{#implementation}}
+from {{appFactoryModule}} import {{appFactoryClass}}
+{{/implementation}}
 
 
 def main():
-    app = connexion.App(__name__, specification_dir='./openapi/')
-    flask_cors.CORS(app.app)
-    app.app.json_encoder = encoder.JSONEncoder
-    app.add_api('openapi.yaml',
-                arguments={'title': '{{appName}}'},
-                pythonic_params=True)
-    app.run(port={{serverPort}})
+{{#server}}
+    host = "{{host}}"
+    port = {{port}}
+{{/server}}
+
+{{#implementation}}
+    factory = {{appFactoryClass}}()
+    info = factory.create_app(name=__name__, host=host, port=port)
+{{/implementation}}
+
+    app = info['app']
+    app.json_encoder = encoder.JSONEncoder
+
+    connexion_app = connexion.App(__name__, specification_dir='./openapi/')
+
+    # Set these since we want to replace connexion's built-in flask app and run
+    # method.
+    connexion_app.app = app
+    connexion_app.host = host
+    connexion_app.port = port
+
+    connexion_app.add_api(
+        'openapi.yaml',
+        arguments={'title': '{{appName}}'},
+        pythonic_params=True
+    )
+
+    factory.start_app(info)
 
 
 if __name__ == '__main__':
