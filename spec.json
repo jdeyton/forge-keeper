@@ -459,7 +459,7 @@
         }
     },
     "servers": [
-        { "url": "https://guilty-spark.arcturus.forge.digital" }
+        { "url": "http://localhost:65001" }
     ],
     "tags": [
         {
