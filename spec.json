@@ -160,37 +160,6 @@
                     }
                 }
             }
-        },
-        "securitySchemes": {
-            "forge_actors": {
-                "type": "oauth2",
-                "flows": {
-                    "authorizationCode": {
-                        "authorizationUrl": "https://mendicant-bias.arcturus.forge.digital/auth/drone",
-                        "tokenUrl": "https://mendicant-bias.arcturus.forge.digital/auth/drone.access",
-                        "scopes": {
-                            "write:drone": "drones do the work"
-                        }
-                    },
-                    "password": {
-                        "tokenUrl": "https://mendicant-bias.arcturus.forge.digital/auth/master",
-                        "scopes": {
-                            "write:master": "forge masters"
-                        }
-                    }
-                }
-            },
-            "forge_auth": {
-                "type": "oauth2",
-                "flows": {
-                    "password": {
-                        "tokenUrl": "https://guilty-spark.arcturus.forge.digital/auth",
-                        "scopes": {
-                            "read:monitor": "monitors keep watch"
-                        }
-                    }
-                }
-            }
         }
     },
     "paths": {
@@ -223,9 +192,6 @@
                         "$ref": "#/components/responses/UnexpectedError"
                     }
                 },
-                "security": [
-                    {"forge_actors": ["write:master"]}
-                ],
                 "tags": ["master"]
             }
         },
@@ -258,9 +224,6 @@
                         "$ref": "#/components/responses/UnexpectedError"
                     }
                 },
-                "security": [
-                    {"forge_auth": ["read:monitor"]}
-                ],
                 "tags": ["monitor"]
             }
         },
@@ -293,9 +256,6 @@
                         "$ref": "#/components/responses/UnexpectedError"
                     }
                 },
-                "security": [
-                    {"forge_auth": ["read:monitor"]}
-                ],
                 "tags": ["monitor"]
             }
         },
@@ -328,9 +288,6 @@
                         "$ref": "#/components/responses/UnexpectedError"
                     }
                 },
-                "security": [
-                    {"forge_actors": ["write:master"]}
-                ],
                 "tags": ["master"]
             }
         },
@@ -363,9 +320,6 @@
                         "$ref": "#/components/responses/UnexpectedError"
                     }
                 },
-                "security": [
-                    {"forge_auth": ["read:monitor"]}
-                ],
                 "tags": ["monitor"]
             }
         },
@@ -398,9 +352,6 @@
                         "$ref": "#/components/responses/UnexpectedError"
                     }
                 },
-                "security": [
-                    {"forge_auth": ["read:monitor"]}
-                ],
                 "tags": ["monitor"]
             }
         },
@@ -436,9 +387,6 @@
                         "$ref": "#/components/responses/UnexpectedError"
                     }
                 },
-                "security": [
-                    {"forge_actors": ["write:drone"]}
-                ],
                 "tags": ["drone"]
             }
         },
@@ -506,9 +454,6 @@
                         "$ref": "#/components/responses/UnexpectedError"
                     }
                 },
-                "security": [
-                    {"forge_auth": ["read:monitor"]}
-                ],
                 "tags": ["monitor"]
             }
         }
