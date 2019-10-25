@@ -1,4 +1,4 @@
-CREATE TABLE archive (
+CREATE TABLE IF NOT EXISTS archive (
     uuid        text NOT NULL,
     name        text NOT NULL,
     description text NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE archive (
     PRIMARY KEY (uuid)
 );
 
-CREATE TABLE drone (
+CREATE TABLE IF NOT EXISTS drone (
     uuid        text NOT NULL,
     name        text NOT NULL,
     description text NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE drone (
     PRIMARY KEY (uuid)
 );
 
-CREATE TABLE archive_data (
+CREATE TABLE IF NOT EXISTS archive_data (
     archive_uuid text NOT NULL,
     drone_uuid   text NOT NULL,
     record_time  text NOT NULL,

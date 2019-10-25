@@ -1,11 +1,14 @@
 import flask
 import flask_cors
 import gevent.pywsgi
+import os.path
+
+from digital.forge.keeper.http.server.core.factory.data import StoreDecorator
 
 
 class AppFactory(object):
 
-    def create_app(self, name=None, host=None, port=None):
+    def create_app(self, name=None, host=None, port=None, *args, **kwargs):
         '''
         Create a flask application.
 
@@ -30,6 +33,13 @@ class AppFactory(object):
 
         # CORS must be enabled for local development.
         flask_cors.CORS(app)
+
+        # Add a data store.
+        if not os.path.exists(app.instance_path):
+            os.mkdir(app.instance_path)
+        path = os.path.join(app.instance_path, 'store.db')
+        schema = 'store.sql'
+        StoreDecorator().decorate_app(app, path, schema)
 
         info = dict(
             app=app,
