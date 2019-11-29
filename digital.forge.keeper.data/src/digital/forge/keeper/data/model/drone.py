@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql.base import (
     TEXT, UUID, TIMESTAMP
 )
 
-from . import Base
+from .base import Base
 
 
 class Drone(Base):
