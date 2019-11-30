@@ -1,0 +1,9 @@
+{
+    "packageName": "digital.forge.keeper.data.conductor",
+    "packageVersion": "1.0.0",
+    "apiPackage": "api",
+    "controllerPackage": "controller",
+    "modelPackage": "model",
+    
+    "serverPort": 65001
+}
