@@ -1,5 +1,5 @@
 {
-    "packageName": "digital.forge.keeper.data.conductor",
+    "packageName": "digital.forge.data.server",
     "packageVersion": "1.0.0",
     "apiPackage": "api",
     "controllerPackage": "controller",
