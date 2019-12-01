@@ -1,0 +1,49 @@
+{{#supportPython2}}
+#!/usr/bin/env python
+{{/supportPython2}}
+{{^supportPython2}}
+#!/usr/bin/env python3
+{{/supportPython2}}
+
+import connexion
+
+from {{packageName}} import encoder
+
+from digital.forge.http.server.app_factory import AppFactory
+from digital.forge.http.server.decorator.cors import CORSDecorator
+from digital.forge.http.server.decorator.sqlalchemy import SQLAlchemyDecorator
+
+
+def main():
+{{#server}}
+    host = "{{host}}"
+    port = {{port}}
+{{/server}}
+
+    factory = AppFactory()
+    factory.add_decorator(CORSDecorator())
+{{#database}}
+    factory.add_decorator(SQLAlchemyDecorator('{{url}}'))
+{{/database}}
+
+    app = factory.create_app(name=__name__)
+    app.json_encoder = encoder.JSONEncoder
+    connexion_app = connexion.App(__name__, specification_dir='./openapi/')
+
+    # Set these since we want to replace connexion's built-in flask app and run
+    # method.
+    connexion_app.app = app
+    connexion_app.host = host
+    connexion_app.port = port
+
+    connexion_app.add_api(
+        'openapi.yaml',
+        arguments={'title': '{{appName}}'},
+        pythonic_params=True
+    )
+
+    factory.start_app(app, host=host, port=port)
+
+
+if __name__ == '__main__':
+    main()

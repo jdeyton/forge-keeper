@@ -3,7 +3,8 @@
 	<name>digital.forge.data.server</name>
 	<comment></comment>
 	<projects>
-		<project>digital.forge.keeper.data</project>
+		<project>digital.forge.data.sql</project>
+		<project>digital.forge.http.server</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

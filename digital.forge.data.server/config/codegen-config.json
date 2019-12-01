@@ -1,9 +1,16 @@
 {
-    "packageName": "digital.forge.data.server",
-    "packageVersion": "1.0.0",
-    "apiPackage": "api",
-    "controllerPackage": "controller",
-    "modelPackage": "model",
-    
-    "serverPort": 65001
+	"appName": "Forge Data",
+	"packageName": "digital.forge.data.server",
+	"packageVersion": "1.0.0",
+	"apiPackage": "api",
+	"controllerPackage": "controller",
+	"modelPackage": "model",
+	"server": {
+		"corePackage": "digital.forge.data.server.core",
+		"host": "0.0.0.0",
+		"port": 65001
+	},
+	"database": {
+		"url": "postgresql://ROLE:PASSWORD@SERVER:PORT/DB_NAME"
+	}
 }
