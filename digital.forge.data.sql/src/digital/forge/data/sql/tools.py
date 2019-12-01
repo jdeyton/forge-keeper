@@ -1,4 +1,4 @@
-from digital.forge.keeper.data.model import Base
+from .model import Base
 
 
 def destroy_database(engine):
