@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>digital.forge.data.server</name>
+	<name>digital.forge.http.server.decorator.sqlalchemy</name>
 	<comment></comment>
 	<projects>
-		<project>digital.forge.data.sql</project>
 		<project>digital.forge.http.server</project>
-		<project>digital.forge.http.server.decorator.cors</project>
-		<project>digital.forge.http.server.decorator.sqlalchemy</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
