@@ -5,6 +5,7 @@
 	"apiPackage": "api",
 	"controllerPackage": "controller",
 	"modelPackage": "model",
+	"implPackage": "impl",
 	"server": {
 		"corePackage": "digital.forge.data.server.core",
 		"host": "0.0.0.0",
