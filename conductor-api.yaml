@@ -36,13 +36,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
     Archive:
       description: A collection of related data.
@@ -68,6 +62,22 @@ components:
           description: The date the archive was created or initialized.
           type: string
           format: date-time
+    ArchiveInputs:
+      description: Required inputs to create a new data archive.
+      type: object
+      properties:
+        name:
+          description: A human readable name for the archive.
+          type: string
+        description:
+          description: A description of the archive.
+          type: string
+        dataType:
+          description: The type of data retained in the archive, e.g., integer or float.
+          type: string
+        units:
+          description: The units for the data retained in the archive.
+          type: string
     Drone:
       description: An entity that collects data for one or more archives.
       type: object
@@ -86,6 +96,27 @@ components:
           description: The date the drone was created or initialized.
           type: string
           format: date-time
+    DroneInputs:
+      description: Required inputs to create a new data drone.
+      type: object
+      properties:
+        name:
+          description: A human readable name for the drone.
+          type: string
+        description:
+          description: A description of the drone.
+          type: string
+    ErrorResponse:
+      description: A response returned for errors.
+      type: object
+      properties:
+        code:
+          description: An error code corresponding to some internal state of the server.
+          type: integer
+          format: int32
+        message:
+          description: A human-readable message explaining the error code or what went wrong.
+          type: string
     Event:
       description: A single data point associated with an archive.
       type: object
@@ -137,20 +168,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  description: A human readable name for the archive.
-                  type: string
-                description:
-                  description: A description of the archive.
-                  type: string
-                dataType:
-                  description: The type of data retained in the archive, e.g., integer or float.
-                  type: string
-                units:
-                  description: The units for the data retained in the archive.
-                  type: string
+              $ref: '#/components/schemas/ArchiveInputs'
       responses:
         '200':
           description: Archive successfully added.
@@ -245,14 +263,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  description: A human readable name for the drone.
-                  type: string
-                description:
-                  description: A description of the drone.
-                  type: string
+              $ref: '#/components/schemas/DroneInputs'
       responses:
         '200':
           description: Drone successfully added.
