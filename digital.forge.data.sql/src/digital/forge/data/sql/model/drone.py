@@ -2,6 +2,7 @@ from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql.base import (
     TEXT, UUID, TIMESTAMP
 )
+from sqlalchemy.sql.functions import now
 
 from .base import Base
 
@@ -26,4 +27,4 @@ class Drone(Base):
     description = Column(TEXT, nullable=False)
 
     # The date the drone was created or initialized.
-    creation_time = Column(TIMESTAMP, nullable=False)
+    creation_time = Column(TIMESTAMP, nullable=False, server_default=now())

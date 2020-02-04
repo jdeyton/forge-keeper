@@ -16,7 +16,7 @@ CREATE TABLE archive (
     description   text NOT NULL,
     data_type     text NOT NULL,
     units         text NOT NULL,
-    creation_time timestamp NOT NULL,
+    creation_time timestamp NOT NULL DEFAULT NOW(),
     PRIMARY KEY (archive_uuid)
 );
 ALTER TABLE archive OWNER TO conductor;
@@ -25,7 +25,7 @@ CREATE TABLE drone (
     drone_uuid    uuid NOT NULL,
     name          text NOT NULL,
     description   text NOT NULL,
-    creation_time timestamp NOT NULL,
+    creation_time timestamp NOT NULL DEFAULT NOW(),
     PRIMARY KEY (drone_uuid)
 );
 ALTER TABLE drone OWNER TO conductor;
