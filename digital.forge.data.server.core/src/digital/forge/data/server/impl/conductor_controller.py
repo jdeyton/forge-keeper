@@ -162,7 +162,15 @@ def remove_archive(archive_uuid):  # noqa: E501
 
     :rtype: None
     """
-    raise Exception('not implemented')
+    removed = False
+    db = get_db_session()
+    for archive in db.query(SQLArchive).filter(SQLArchive.archive_uuid == archive_uuid):
+        removed = True
+        db.delete(archive)
+    if removed:
+        db.commit()
+        return 'Removed', 200
+    return 'Not found', 404
 
 
 def remove_drone(drone_uuid):  # noqa: E501
@@ -175,4 +183,12 @@ def remove_drone(drone_uuid):  # noqa: E501
 
     :rtype: None
     """
-    raise Exception('not implemented')
+    removed = False
+    db = get_db_session()
+    for drone in db.query(SQLDrone).filter(SQLDrone.drone_uuid == drone_uuid):
+        removed = True
+        db.delete(drone)
+    if removed:
+        db.commit()
+        return 'Removed', 200
+    return 'Not found', 404
