@@ -1,3 +1,5 @@
+import uuid
+
 from digital.forge.data.server.model.archive_inputs import ArchiveInputs
 from digital.forge.data.server.model.drone_inputs import DroneInputs
 
@@ -8,6 +10,8 @@ from digital.forge.data.sql.model import Archive as SQLArchive
 from digital.forge.data.sql.model import Drone as SQLDrone
 
 from digital.forge.data.server.tools import get_db_session
+
+# TODO We still need to return the appropriate status codes.
 
 
 def add_archive(archive_inputs=None):  # noqa: E501
@@ -20,7 +24,22 @@ def add_archive(archive_inputs=None):  # noqa: E501
 
     :rtype: str
     """
-    raise Exception('not implemented')
+    if archive_inputs is None:
+        return None
+    
+    archive = SQLArchive(
+        archive_uuid=str(uuid.uuid4()),
+        name=archive_inputs.name,
+        description=archive_inputs.description,
+        data_type=archive_inputs.data_type,
+        units=archive_inputs.units,
+    )
+    
+    db = get_db_session()
+    db.add(archive)
+    db.commit()
+    
+    return None
 
 
 def add_drone(drone_inputs=None):  # noqa: E501
@@ -33,7 +52,20 @@ def add_drone(drone_inputs=None):  # noqa: E501
 
     :rtype: str
     """
-    raise Exception('not implemented')
+    if drone_inputs is None:
+        return None
+    
+    drone = SQLDrone(
+        drone_uuid=str(uuid.uuid4()),
+        name=drone_inputs.name,
+        description=drone_inputs.description,
+    )
+    
+    db = get_db_session()
+    db.add(drone)
+    db.commit()
+    
+    return None
 
 
 def get_archive(archive_uuid):  # noqa: E501
