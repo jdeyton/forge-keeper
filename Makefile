@@ -1,15 +1,4 @@
-
-# Windows definitions
-ifeq ($(OS),Windows_NT)
-	PIPENV ?= pipenv.exe
-	PYTHON ?= python3.exe
-	RM = -powershell Remove-Item -Force
-# Unix-y definitions
-else
-	PIPENV ?= pipenv
-	PYTHON ?= python3
-	RM = rm -f
-endif
+include $(shell pipenv --where)/tools/make/common.mk
 
 .PHONY = clean clean-venv venv
 

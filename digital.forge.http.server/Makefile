@@ -1,19 +1,10 @@
-
-# Windows definitions
-ifeq ($(OS),Windows_NT)
-	PIPENV ?= pipenv.exe
-	PYTHON ?= python.exe
-	RM = -powershell Remove-Item -Force
-# Unix-y definitions
-else
-	PIPENV ?= pipenv
-	PYTHON ?= python3
-	RM = rm -f
-endif
+include $(shell pipenv --where)/tools/make/common.mk
 
 PROJECT = digital.forge.http.server
 
 .PHONY = clean
+
+all: dist
 
 dist: README.md src setup.json setup.py
 	$(PYTHON) setup.py bdist_wheel
