@@ -1,0 +1,10 @@
+{
+    "project_name": "digital.forge.http.server",
+    "version": "0.1.0",
+    "description": "Provides factory methods for creating and decorating Flask apps.",
+    "url": "https://github.com/jdeyton/forge-keeper",
+    "author": "Jordan Deyton",
+    "author_email": "jordan.deyton@gmail.com",
+    "keywords": "forge.digital http server factory decorator",
+    "python_version": "3.8"
+}
