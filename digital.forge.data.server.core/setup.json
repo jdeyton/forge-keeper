@@ -1,0 +1,10 @@
+{
+    "project_name": "digital.forge.data.server.core",
+    "version": "0.1.0",
+    "description": "Provides controller implementations for digital.forge.data.server.",
+    "url": "https://github.com/jdeyton/forge-keeper",
+    "author": "Jordan Deyton",
+    "author_email": "jordan.deyton@gmail.com",
+    "keywords": "forge.digital data server controller",
+    "python_version": "3.8"
+}

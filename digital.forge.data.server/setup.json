@@ -1,0 +1,10 @@
+{
+    "project_name": "digital.forge.data.server",
+    "version": "0.1.0",
+    "description": "An OpenAPI-generated Flask server for collecting sensor data.",
+    "url": "https://github.com/jdeyton/forge-keeper",
+    "author": "Jordan Deyton",
+    "author_email": "jordan.deyton@gmail.com",
+    "keywords": "forge.digital data server OpenAPI",
+    "python_version": "3.8"
+}

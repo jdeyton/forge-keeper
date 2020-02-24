@@ -1,0 +1,10 @@
+{
+    "project_name": "digital.forge.http.server.decorator.cors",
+    "version": "0.1.0",
+    "description": "Provides a Flask app decorator that enables CORS.",
+    "url": "https://github.com/jdeyton/forge-keeper",
+    "author": "Jordan Deyton",
+    "author_email": "jordan.deyton@gmail.com",
+    "keywords": "forge.digital http server decorator CORS",
+    "python_version": "3.8"
+}

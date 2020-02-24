@@ -1,2 +1,0 @@
-Flask-SQLAlchemy>=2.4.1
-psycopg2>=2.8.4
