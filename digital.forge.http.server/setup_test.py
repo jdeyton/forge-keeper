@@ -4,11 +4,6 @@ from setuptools import setup, find_namespace_packages
 
 here = path.abspath(path.dirname(__file__))
 
-requires = [
-    'Flask>=1.1.1',
-    'validators>=0.14.2',
-]
-
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
@@ -17,8 +12,12 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 with open(path.join(here, 'setup.json'), encoding='utf-8') as f:
     cfg = json.loads(f.read())
 
+requires = [
+    cfg['project_name'] + '==' + cfg['version'],
+]
+
 setup(
-    name=cfg['project_name'],
+    name=cfg['project_name'] + '.test',
     version=cfg['version'],
     description=cfg['description'],
     long_description=long_description,
@@ -39,7 +38,7 @@ setup(
     ],
     keywords=cfg['keywords'],
     package_dir={'': 'src'},
-    packages=find_namespace_packages(where='src', exclude=['*.test']),
+    packages=find_namespace_packages(where='src', include=['*.test']),
     python_requires='>=' + cfg['python_version'],
     install_requires=requires,
     extras_require={},

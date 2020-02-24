@@ -1,4 +1,5 @@
 import flask
+import validators
 #import gevent.pywsgi
 
 from .app_decorator import AppDecorator
@@ -29,7 +30,7 @@ class AppFactory(object):
         :param decorator: The decorator to add.
         '''
         if decorator is None or not isinstance(decorator, AppDecorator):
-            raise Exception('Decorator must be an AppDecorator instance')
+            raise ValueError('Decorator must be an AppDecorator instance')
         self._decorators.append(decorator)
 
     def create_app(self, name, *args, **kwargs):
@@ -45,7 +46,7 @@ class AppFactory(object):
         :rtype: A Flask instance.
         '''
         if name is None:
-            raise Exception('App name must not be null')
+            raise ValueError('App name must not be null')
         name = str(name)
 
         app = flask.Flask(name)
@@ -69,12 +70,23 @@ class AppFactory(object):
         '''
 
         if app is None or not isinstance(app, flask.Flask):
-            raise Exception('App must be Flask instance')
+            raise ValueError('App must be Flask instance')
 
         if host is None:
             host = '0.0.0.0'
+        elif not validators.domain(host) and not validators.ipv4(host):
+            raise ValueError('Host must be an FQDN or IPv4 address')
+        
         if port is None:
             port = 8080
+        else:
+            try:
+                if not isinstance(port, int):
+                    raise ValueError
+                if not 1 <= port <= 65535:
+                    raise ValueError
+            except ValueError:
+                raise ValueError('Port must be an integer between 1 and 65535')
 
         # I don't feel like fighting with Visual C++ tools to get this working
         # from Windows, so for now I'm going to use the Flask dev server.

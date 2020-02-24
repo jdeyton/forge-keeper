@@ -4,13 +4,20 @@ PROJECT = digital.forge.http.server
 
 .PHONY = clean
 
-all: dist
+all: dist dist-test
 
 dist: README.md src setup.json setup.py
 	$(PYTHON) setup.py bdist_wheel
-clean-dist:
 	$(RM) -r build
-	$(RM) -r dist
 	$(RM) -r src/$(PROJECT).egg-info
+clean-dist:
+	$(RM) -r dist
 
-clean: clean-dist
+dist-test: dist setup_test.py
+	$(PYTHON) setup_test.py bdist_wheel -d dist-test
+	$(RM) -r build
+	$(RM) -r src/$(PROJECT).test.egg-info
+clean-dist-test:
+	$(RM) -r dist-test
+
+clean: clean-dist clean-dist-test
