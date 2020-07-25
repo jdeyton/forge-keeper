@@ -1,4 +1,7 @@
 
+# codegen
+**/.openapi-generator/
+
 # virtual environments
-**/.venv
+**/.venv/
 **/poetry.lock

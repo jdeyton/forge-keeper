@@ -10,24 +10,11 @@ clean:
 .PHONY: all clean
 
 # System commands:
+CP ?= /bin/cp -f
 CURL ?= /bin/curl
 RM ?= /bin/rm -f
+RMDIR ?= /bin/rmdir
 TOUCH ?= /bin/touch
 
-# Python commands:
-POETRY ?= poetry
-
-# ---- Build Python wheels ---- #
-dist: pyproject.toml
-	$(POETRY) build -f wheel
-clean-dist:
-	$(RM) -r dist
-.PHONY: clean-dist
-
-# ---- Initialize Virtual Environment ---- #
-.venv: pyproject.toml
-	poetry install
-	$(TOUCH) $@
-clean-venv:
-	$(RM) -r .venv
-	$(RM) poetry.lock
+# Other commands:
+JAVA ?= java
