@@ -11,12 +11,14 @@ clean: clean-dist
 
 # Source code:
 # This uses the relatively complete model from the python-flask generator.
-.codegen-src:
+.codegen-src: .venv
 	$(CP) cfg/src/.openapi-generator-ignore src/
 	$(OPENAPI_CLI) generate -g python-flask -i ../data.json -o src -c cfg/codegen.json -t cfg/src/templates
 	$(RMDIR) src/digital/forge/data/controllers
 	$(RMDIR) src/digital/forge/data/openapi
 	$(RMDIR) src/digital/forge/data/test
+	$(RM) src/.openapi-generator-ignore
+	$(POETRY) run autoflake --in-place --recursive --remove-all-unused-imports src
 	$(TOUCH) .codegen-src
 
 # Test code:
@@ -25,6 +27,7 @@ clean: clean-dist
 	$(CP) cfg/tests/.openapi-generator-ignore src/
 	$(OPENAPI_CLI) generate -g python -i ../data.json -o src -c cfg/codegen.json -t cfg/tests/templates
 	$(RMDIR) src/digital/forge/data/api
+	$(RM) src/.openapi-generator-ignore
 	$(TOUCH) .codegen-tests
 
 # Targets for the above.
