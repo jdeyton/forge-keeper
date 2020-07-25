@@ -1,3 +1,7 @@
+# coding: utf-8
+"""
+This module provides a class for encoding API model objects to JSON.
+"""
 import json
 import six
 
@@ -5,6 +9,11 @@ from {{modelPackage}}.base_model_ import Model
 
 
 class JSONEncoder(json.JSONEncoder):
+    """
+    A JSONEncoder implementation for API model objects.
+
+    This class is automatically generated! **DO NOT TOUCH!**
+    """
     include_nulls = False
 
     def default(self, o):
