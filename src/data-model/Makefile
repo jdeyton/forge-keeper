@@ -18,16 +18,17 @@ clean: clean-dist
 	$(RMDIR) src/digital/forge/data/openapi
 	$(RMDIR) src/digital/forge/data/test
 	$(RM) src/.openapi-generator-ignore
-	$(POETRY) run autoflake --in-place --recursive --remove-all-unused-imports src
+	$(POETRY) run autoflake --in-place --recursive --remove-all-unused-imports src/digital
 	$(TOUCH) .codegen-src
 
 # Test code:
 # This uses the python generator to get test files for the model.
-.codegen-tests:
+.codegen-tests: .venv
 	$(CP) cfg/tests/.openapi-generator-ignore src/
 	$(OPENAPI_CLI) generate -g python -i ../data.json -o src -c cfg/codegen.json -t cfg/tests/templates
 	$(RMDIR) src/digital/forge/data/api
 	$(RM) src/.openapi-generator-ignore
+	$(POETRY) run autoflake --in-place --recursive --remove-all-unused-imports src/test
 	$(TOUCH) .codegen-tests
 
 # Targets for the above.

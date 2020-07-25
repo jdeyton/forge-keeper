@@ -1,0 +1,149 @@
+# coding: utf-8
+{{>partial_header}}
+from __future__ import absolute_import
+
+import datetime
+import unittest
+
+{{#models}}
+{{#model}}
+from {{modelPackage}}.{{classFilename}} import {{classname}}
+
+
+class Test{{classname}}(unittest.TestCase):
+    """{{classname}} unit test stubs"""
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    @staticmethod
+    def make_instance(self, include_optional):
+        """Test {{classname}}
+            include_option is a boolean, when False only required
+            params are included, when True both required and
+            optional params are included """
+        # TODO: Review these values to ensure they match the API example values.
+        if include_optional:
+            return {{classname}}(
+{{#vars}}
+                {{name}}={{#example}}{{{.}}}{{/example}}{{^example}}None{{/example}}{{#hasMore}},{{/hasMore}}
+{{/vars}}
+            )
+        else:
+            return {{classname}}(
+{{#vars}}
+{{#required}}
+                {{name}}={{#example}}{{{.}}}{{/example}}{{^example}}None{{/example}},
+{{/required}}
+{{/vars}}
+        )
+
+    def test_{{classFilename}}(self):
+        """Test {{classname}}"""
+
+        # Note: These constructor checks assume that all input arguments are
+        # optional. In other words:
+        #   make_instance(False) yields an object with all default values
+        #   make_instance(True)  yields an object with all example values
+
+        instance = self.make_instance(include_optional=False)
+{{#vars}}
+        self.assertEqual({{#defaultValue}}{{{.}}}{{/defaultValue}}, instance.{{name}})
+{{/vars}}
+
+        # TODO: Review these values to ensure they match the API example values.
+        instance = self.make_instance(include_optional=True)
+{{#vars}}
+        self.assertEqual({{#example}}{{{.}}}{{/example}}, instance.{{name}})
+{{/vars}}
+{{#vars}}
+
+    def test_{{name}}(self):
+        """Test the "{{name}}" property"""
+        instance = self.make_instance()
+  {{^isNullable}}
+
+        # This value can't be set to null.
+        with self.assertRaises(
+                ValueError,
+                msg='{{name}} cannot be set to null'
+        ):
+            instance.{{name}} = None
+  {{/isNullable}}
+  {{#isEnum}}
+
+        # Check that all values defined by the API can actually be set as the
+        # property's value.
+        allowed_values = [{{#isNullable}}None,{{/isNullable}}{{#allowableValues}}{{#values}}{{#isString}}"{{/isString}}{{{this}}}{{#isString}}"{{/isString}}{{^-last}}, {{/-last}}{{/values}}{{/allowableValues}}]
+        for value in allowed_values:
+            instance.{{name}} = value
+            self.assertEqual(
+                value,
+                instance.{{name}},
+                msg='{{name}} can be set to "%s"' % (value)
+            )
+
+        # Check a value that is (almost assuredly) not allowed.
+        with self.assertRaises(
+                ValueError,
+                msg='{{name}} cannot be set to an invalid value'
+        ):
+            instance.{{name}} = 'The Roci is a cool spacecraft.'
+  {{/isEnum}}
+  {{^isEnum}}
+
+        # TODO: Review the valid and invalid values.
+
+        # Check some valid values.
+        valid_values = []
+        for value in valid_values:
+            instance.{{name}} = value
+            self.assertEqual(
+                value,
+                instance.{{name}},
+                msg='{{name}} can be set to valid value "%r"' % (value)
+            )
+
+        # Check some invalid values raise ValueError exceptions.
+        invalid_values = [
+            [],
+            {},
+        ]
+        for value in invalid_values:
+            with self.assertRaises(
+                    ValueError,
+                    msg='{{name}} cannot be set to an invalid value'
+            ):
+                instance.{{name}} = value
+  {{/isEnum}}
+{{/vars}}
+
+    def test_equals(self):
+        """Test equality operations"""
+        obj_a = self.make_instance(include_optional=True)
+        obj_b = self.make_instance(include_optional=True)
+        obj_c = self.make_instance(include_optional=True)
+
+        # Create a different object.
+        # TODO: Review and confirm that this is enough to make a different one.
+        obj_x = self.make_instance(include_optional=False)
+
+        self.assertEqual(obj_a, obj_a, msg='Reflexive property: a == a')
+        self.assertEqual(obj_a, obj_b, msg='Symmetric property: a == b')
+        self.assertEqual(obj_b, obj_a, msg='Symmetric property: b == a')
+        self.asset_equal(obj_b, obj_c, msg='Transitive property: b == c')
+        self.asset_equal(obj_a, obj_c, msg='Transitive property: a == c')
+
+        self.assertNotEqual(obj_a, obj_x, msg='Not equals: a != x')
+
+        self.assertNotEqual(obj_a, 'foobar', msg='The object is not a string')
+        self.assertNotEqual(obj_a, None, msg='The object is not null')
+
+{{/model}}
+{{/models}}
+
+if __name__ == '__main__':
+    unittest.main()
