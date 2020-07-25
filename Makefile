@@ -1,11 +1,6 @@
 PROJECT_ROOT ?= $(shell git rev-parse --show-toplevel)
 include $(PROJECT_ROOT)/tools/make/common.mk
 
-# The default target:
-all:
-
-.PHONY: all clean
-
 # ---- Development dependencies ---- #
 # Main rule:
 dev-dependencies:

@@ -1,5 +1,14 @@
 # Allow these Python defines to be provided in advance.
 
+# Make "all" the default target.
+all:
+
+# Declare clean.
+clean:
+
+# Both should be evaluated regardless..
+.PHONY: all clean
+
 # System commands:
 CURL ?= /bin/curl
 RM ?= /bin/rm -f
