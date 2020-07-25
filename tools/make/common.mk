@@ -30,3 +30,4 @@ clean-dist:
 	$(TOUCH) $@
 clean-venv:
 	$(RM) -r .venv
+	$(RM) poetry.lock
