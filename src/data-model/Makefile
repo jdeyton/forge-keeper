@@ -24,6 +24,7 @@ clean: clean-dist
 .codegen-tests:
 	$(CP) cfg/tests/.openapi-generator-ignore src/
 	$(OPENAPI_CLI) generate -g python -i ../data.json -o src -c cfg/codegen.json -t cfg/tests/templates
+	$(RMDIR) src/digital/forge/data/api
 	$(TOUCH) .codegen-tests
 
 # Targets for the above.
