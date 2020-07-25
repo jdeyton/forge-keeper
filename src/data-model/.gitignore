@@ -1,0 +1,6 @@
+/.codegen
+/.codegen-src
+/.codegen-tests
+/dist
+/src/.openapi-generator
+/src/.openapi-generator-ignore
