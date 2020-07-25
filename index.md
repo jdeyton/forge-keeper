@@ -10,12 +10,15 @@ Utilities and APIs for monitoring the digital forge.
 
 ### Required Setup
 
-By default, poetry likes to put virtual environments in your home directory.
-Source control is smart enough to deal with them in the project directories, so
-go ahead and apply the following settings:
+* Update your poetry configuration to put virtual environments in the project
+  directory. This is both convenient and not a problem for git to handle.
+* Download the OpenAPI .jar file to the bin folder.
+
+For your convenience, you can do this by running the following commands in this
+directory:
 
 ```
-poetry config virtualenvs.in-project true
+make dev-dependencies
 ```
 
 ## Organization

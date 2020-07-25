@@ -1,12 +1,10 @@
-include $(shell pipenv --where)/tools/make/common.mk
+all: dev-dependencies
 
-.PHONY = clean clean-venv venv
+.PHONY: dev-dependencies
 
-.venv: Pipfile
-	$(PIPENV) install
-venv: .venv
-clean-venv:
-	-$(PIPENV) --rm
-	$(RM) Pipfile.lock
+POETRY ?= poetry
 
-clean: clean-venv
+dev-dependencies:
+	$(POETRY) config virtualenvs.in-project true
+	$(MAKE) -C bin
+
