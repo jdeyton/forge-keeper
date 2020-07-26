@@ -63,6 +63,12 @@ class {{classname}}(Model):
         }
 {{#vars}}{{#-first}}
 {{/-first}}
+  {{#required}}
+    {{^isNullable}}
+        if {{name}} is None:
+            raise ValueError('`{{name}}` is a required value')
+    {{/isNullable}}
+  {{/required}}
         self._{{name}} = {{name}}
 {{/vars}}
 
@@ -102,6 +108,14 @@ class {{classname}}(Model):
         :param {{name}}: The {{name}} of this {{classname}}.
         :type {{name}}: {{dataType}}
         """
+{{^isNullable}}
+
+        if {{name}} is None:
+            raise ValueError("Invalid value for `{{name}}`, must not be `None`")
+{{/isNullable}}
+
+        if {{name}} is not None and not isinstance({{name}}, {{dataType}}):
+            raise ValueError("Invalid value for `{{name}}`, must be a `{{dataType}}`")
 {{#isEnum}}
 {{#isContainer}}
         allowed_values = [{{#isNullable}}None,{{/isNullable}}{{#allowableValues}}{{#values}}{{#items.isString}}"{{/items.isString}}{{{this}}}{{#items.isString}}"{{/items.isString}}{{^-last}}, {{/-last}}{{/values}}{{/allowableValues}}]  # noqa: E501
@@ -132,10 +146,6 @@ class {{classname}}(Model):
 {{/isContainer}}
 {{/isEnum}}
 {{^isEnum}}
-{{#required}}
-        if {{name}} is None:
-            raise ValueError("Invalid value for `{{name}}`, must not be `None`")  # noqa: E501
-{{/required}}
 {{#hasValidation}}
 {{#maxLength}}
         if {{name}} is not None and len({{name}}) > {{maxLength}}:

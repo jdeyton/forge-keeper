@@ -20,7 +20,7 @@ class Test{{classname}}(unittest.TestCase):
         pass
 
     @staticmethod
-    def make_instance(self, include_optional):
+    def make_instance(include_optional):
         """Test {{classname}}
             include_option is a boolean, when False only required
             params are included, when True both required and
@@ -39,7 +39,7 @@ class Test{{classname}}(unittest.TestCase):
                 {{name}}={{#example}}{{{.}}}{{/example}}{{^example}}None{{/example}},
 {{/required}}
 {{/vars}}
-        )
+            )
 
     def test_{{classFilename}}(self):
         """Test {{classname}}"""
@@ -49,13 +49,13 @@ class Test{{classname}}(unittest.TestCase):
         #   make_instance(False) yields an object with all default values
         #   make_instance(True)  yields an object with all example values
 
-        instance = self.make_instance(include_optional=False)
+        instance = Test{{classname}}.make_instance(include_optional=False)
 {{#vars}}
         self.assertEqual({{#defaultValue}}{{{.}}}{{/defaultValue}}, instance.{{name}})
 {{/vars}}
 
         # TODO: Review these values to ensure they match the API example values.
-        instance = self.make_instance(include_optional=True)
+        instance = Test{{classname}}.make_instance(include_optional=True)
 {{#vars}}
         self.assertEqual({{#example}}{{{.}}}{{/example}}, instance.{{name}})
 {{/vars}}
@@ -63,7 +63,7 @@ class Test{{classname}}(unittest.TestCase):
 
     def test_{{name}}(self):
         """Test the "{{name}}" property"""
-        instance = self.make_instance()
+        instance = Test{{classname}}.make_instance()
   {{^isNullable}}
 
         # This value can't be set to null.
@@ -123,19 +123,19 @@ class Test{{classname}}(unittest.TestCase):
 
     def test_equals(self):
         """Test equality operations"""
-        obj_a = self.make_instance(include_optional=True)
-        obj_b = self.make_instance(include_optional=True)
-        obj_c = self.make_instance(include_optional=True)
+        obj_a = Test{{classname}}.make_instance(include_optional=True)
+        obj_b = Test{{classname}}.make_instance(include_optional=True)
+        obj_c = Test{{classname}}.make_instance(include_optional=True)
 
         # Create a different object.
         # TODO: Review and confirm that this is enough to make a different one.
-        obj_x = self.make_instance(include_optional=False)
+        obj_x = Test{{classname}}.make_instance(include_optional=False)
 
         self.assertEqual(obj_a, obj_a, msg='Reflexive property: a == a')
         self.assertEqual(obj_a, obj_b, msg='Symmetric property: a == b')
         self.assertEqual(obj_b, obj_a, msg='Symmetric property: b == a')
-        self.asset_equal(obj_b, obj_c, msg='Transitive property: b == c')
-        self.asset_equal(obj_a, obj_c, msg='Transitive property: a == c')
+        self.assertEqual(obj_b, obj_c, msg='Transitive property: b == c')
+        self.assertEqual(obj_a, obj_c, msg='Transitive property: a == c')
 
         self.assertNotEqual(obj_a, obj_x, msg='Not equals: a != x')
 
