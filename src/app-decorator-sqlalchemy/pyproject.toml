@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "digital-forge-app-decorator-sqlalchemy"
+version = "0.0.0"
+description = "This project provides an app decorator for supporting SQLAlchemy."
+authors = ["Jordan Deyton <jordan.deyton@gmail.com>"]
+license = "MIT"
+packages = [ { from = "src", include = "digital" } ]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Flask-SQLAlchemy = "^2.4.4"
+psycopg2 = "^2.8.5"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.5.3"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
