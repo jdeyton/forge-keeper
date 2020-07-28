@@ -1,0 +1,30 @@
+{{#supportPython2}}
+#!/usr/bin/env python
+{{/supportPython2}}
+{{^supportPython2}}
+#!/usr/bin/env python3
+{{/supportPython2}}
+# coding: utf-8
+"""
+This module serves as the main entry point for the server process.
+"""
+
+import connexion
+
+from {{packageName}} import encoder
+
+
+def main():
+    """
+    The standard main method.
+    """
+    app = connexion.App(__name__, specification_dir='../openapi/')
+    app.app.json_encoder = encoder.JSONEncoder
+    app.add_api('openapi.yaml',
+                arguments={'title': '{{appName}}'},
+                pythonic_params=True)
+    app.run(port={{serverPort}})
+
+
+if __name__ == '__main__':
+    main()
