@@ -1,3 +1,7 @@
+# coding: utf-8
+"""
+This module provides the base class for a Flask app decorator.
+"""
 
 
 class AppDecorator(object):
@@ -9,4 +13,7 @@ class AppDecorator(object):
     '''
 
     def decorate(self, app):
+        """
+        Concrete sub-classes are expected to implement this method.
+        """
         pass

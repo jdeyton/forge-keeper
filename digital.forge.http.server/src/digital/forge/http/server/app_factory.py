@@ -1,6 +1,13 @@
+# coding: utf-8
+"""
+This module provides a factory for creating a Flask application in a data-
+driven fashion. It also provides support for attaching additional behaviors
+called "decorators" depending on the needs of the application.
+"""
 import flask
 import validators
-#import gevent.pywsgi
+# See comment at bottom of start_app
+# import gevent.pywsgi
 
 from .app_decorator import AppDecorator
 
@@ -76,7 +83,7 @@ class AppFactory(object):
             host = '0.0.0.0'
         elif not validators.domain(host) and not validators.ipv4(host):
             raise ValueError('Host must be an FQDN or IPv4 address')
-        
+
         if port is None:
             port = 8080
         else:
@@ -90,6 +97,6 @@ class AppFactory(object):
 
         # I don't feel like fighting with Visual C++ tools to get this working
         # from Windows, so for now I'm going to use the Flask dev server.
-        #server = gevent.pywsgi.WSGIServer((host, port), app)
-        #server.serve_forever()
+        # server = gevent.pywsgi.WSGIServer((host, port), app)
+        # server.serve_forever()
         app.run()
