@@ -1,26 +1,34 @@
-import flask
+# coding: utf-8
+"""
+This module tests the app factory.
+"""
 import sys
 import unittest
 from unittest.mock import Mock, call
 
-from digital.forge.http.server.app_decorator import AppDecorator
-from digital.forge.http.server.app_factory import AppFactory
+import flask
+
+from digital.forge.app.decorator import Decorator
+from digital.forge.app.factory import Factory
 
 
-class TestAppFactory(unittest.TestCase):
+class TestFactory(unittest.TestCase):
+    """
+    This class tests the app factory and its use of decorators.
+    """
 
     def test_add_valid_decorator(self):
-        '''
+        """
         Valid decorators should be added to the internal list.
-        '''
-        factory = AppFactory()
+        """
+        factory = Factory()
         self.assertListEqual(
             factory._decorators,
             []
         )
 
-        decorator = AppDecorator()
-        decorator2 = AppDecorator()
+        decorator = Decorator()
+        decorator2 = Decorator()
 
         factory.add_decorator(decorator)
         self.assertListEqual(
@@ -41,10 +49,10 @@ class TestAppFactory(unittest.TestCase):
         )
 
     def test_add_invalid_decorator(self):
-        '''
+        """
         Invalid decorators should throw exceptions when added.
-        '''
-        factory = AppFactory()
+        """
+        factory = Factory()
 
         with self.assertRaises(ValueError):
             factory.add_decorator(None)
@@ -58,38 +66,38 @@ class TestAppFactory(unittest.TestCase):
         )
 
     def test_create_app(self):
-        '''
+        """
         Creating an app should return a Flask app with the input name.
-        '''
-        factory = AppFactory()
+        """
+        factory = Factory()
 
         app = factory.create_app('Detective Miller')
 
         self.assertIsInstance(app, flask.Flask)
-        self.assertEquals('Detective Miller', app.name)
+        self.assertEqual('Detective Miller', app.name)
 
     def test_create_app_with_invalid_name(self):
-        '''
+        """
         Creating an app with an invalid name should raise an exception.
-        '''
-        factory = AppFactory()
+        """
+        factory = Factory()
 
         with self.assertRaises(ValueError):
             factory.create_app(None)
 
     def test_create_decorated_app(self):
-        '''
+        """
         Creating an app with decorators should call the decorator function on
         each added decorator (including duplicates) in the order they were
         added.
-        '''
-        factory = AppFactory()
+        """
+        factory = Factory()
 
         decorate1 = Mock(name='decorate')
         decorate2 = Mock(name='decorate')
 
-        decorator1 = AppDecorator()
-        decorator2 = AppDecorator()
+        decorator1 = Decorator()
+        decorator2 = Decorator()
 
         decorator1.decorate = decorate1
         decorator2.decorate = decorate2
@@ -112,12 +120,12 @@ class TestAppFactory(unittest.TestCase):
         )
 
     def test_start_app(self):
-        '''
+        """
         Starting an app should start up a server using the app with the input
         (or default) host and port.
-        '''
-        factory = AppFactory()
-        factory.add_decorator(AppDecorator())
+        """
+        factory = Factory()
+        factory.add_decorator(Decorator())
         app = factory.create_app('James Holden')
         app.run = Mock(name='run')
 
@@ -126,12 +134,12 @@ class TestAppFactory(unittest.TestCase):
         app.run.assert_called_once()
 
     def test_start_app_with_host_and_port(self):
-        '''
+        """
         Starting an app should start up a server using the app with the input
         (or default) host and port.
-        '''
-        factory = AppFactory()
-        factory.add_decorator(AppDecorator())
+        """
+        factory = Factory()
+        factory.add_decorator(Decorator())
         app = factory.create_app('James Holden')
         app.run = Mock(name='run')
 
@@ -155,10 +163,10 @@ class TestAppFactory(unittest.TestCase):
             app.run.reset_mock()
 
     def test_start_invalid_app(self):
-        '''
+        """
         Starting an invalid app object should raise an exception.
-        '''
-        factory = AppFactory()
+        """
+        factory = Factory()
 
         with self.assertRaises(ValueError):
             factory.start_app(None)
@@ -167,11 +175,11 @@ class TestAppFactory(unittest.TestCase):
             factory.start_app('Star Helix')
 
     def test_start_app_with_bad_host_or_port(self):
-        '''
+        """
         Starting an app with an invalid host/port should raise an exception.
-        '''
-        factory = AppFactory()
-        factory.add_decorator(AppDecorator())
+        """
+        factory = Factory()
+        factory.add_decorator(Decorator())
         app = factory.create_app('Naomi Nagata')
         app.run = Mock(name='run')
 

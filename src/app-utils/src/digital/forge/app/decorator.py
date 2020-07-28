@@ -4,7 +4,7 @@ This module provides the base class for a Flask app decorator.
 """
 
 
-class AppDecorator(object):
+class Decorator:
     '''
     A base class for decorating a Flask app with additional features.
 
@@ -16,4 +16,3 @@ class AppDecorator(object):
         """
         Concrete sub-classes are expected to implement this method.
         """
-        pass

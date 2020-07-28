@@ -9,10 +9,10 @@ import validators
 # See comment at bottom of start_app
 # import gevent.pywsgi
 
-from .app_decorator import AppDecorator
+from digital.forge.app.decorator import Decorator
 
 
-class AppFactory(object):
+class Factory:
     '''
     An app factory is used to create a Flask app.
 
@@ -36,11 +36,11 @@ class AppFactory(object):
 
         :param decorator: The decorator to add.
         '''
-        if decorator is None or not isinstance(decorator, AppDecorator):
-            raise ValueError('Decorator must be an AppDecorator instance')
+        if decorator is None or not isinstance(decorator, Decorator):
+            raise ValueError('Decorator must be a Decorator instance')
         self._decorators.append(decorator)
 
-    def create_app(self, name, *args, **kwargs):
+    def create_app(self, name, *_args, **_kwargs):
         '''
         Create a flask application.
 
@@ -63,7 +63,8 @@ class AppFactory(object):
 
         return app
 
-    def start_app(self, app, host=None, port=None, *args, **kwargs):
+    @staticmethod
+    def start_app(app, host=None, port=None, **_kwargs):
         '''
         Start a previously created flask application.
 
