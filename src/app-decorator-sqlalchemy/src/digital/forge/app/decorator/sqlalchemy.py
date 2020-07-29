@@ -4,7 +4,7 @@ This module provides an app decorator that adds SQLAlchemy features to the app.
 """
 import flask_sqlalchemy
 
-from digital.forge.app.decorator import Decorator
+from digital.forge.app.abstract_decorator import Decorator
 
 
 class SQLAlchemyDecorator(Decorator):
