@@ -3,7 +3,11 @@
 	<name>forge-keeper-data-server</name>
 	<comment></comment>
 	<projects>
+		<project>app-decorator-cors</project>
+		<project>app-decorator-sqlalchemy</project>
+		<project>app-utils</project>
 		<project>forge-keeper-data-model</project>
+		<project>forge-keeper-data-sql</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
