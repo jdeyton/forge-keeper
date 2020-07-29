@@ -2,5 +2,13 @@
     "projectName": "digital-forge-data-server",
     "packageName": "digital.forge.data",
     "packageVersion": "0.0.0",
-    "controllerPackage": "server"
+    "controllerPackage": "server",
+    "server": {
+        "cors": 42,
+        "host": "0.0.0.0",
+        "port": 65001
+    },
+    "database": {
+        "url": "postgresql://conductor:conductor@localhost:5432/forge_data"
+    }
 }

@@ -12,18 +12,55 @@ This module serves as the main entry point for the server process.
 import connexion
 
 from {{packageName}} import encoder
+from digital.forge.app.factory import Factory as AppFactory
+{{#server}}
+  {{#cors}}
+from digital.forge.app.decorator.cors import CORSDecorator
+  {{/cors}}
+{{/server}}
+{{#database}}
+from digital.forge.app.decorator.sqlalchemy import SQLAlchemyDecorator
+{{/database}}
 
 
 def main():
     """
     The standard main method.
     """
-    app = connexion.App(__name__, specification_dir='../openapi/')
-    app.app.json_encoder = encoder.JSONEncoder
-    app.add_api('openapi.yaml',
-                arguments={'title': '{{appName}}'},
-                pythonic_params=True)
-    app.run(port={{serverPort}})
+{{#server}}
+    host = "{{host}}"
+    port = {{port}}
+{{/server}}
+
+    factory = AppFactory()
+{{#server}}
+  {{#cors}}
+    factory.add_decorator(CORSDecorator())
+  {{/cors}}
+{{/server}}
+{{#database}}
+    factory.add_decorator(SQLAlchemyDecorator(
+        '{{url}}'
+    ))
+{{/database}}
+
+    app = factory.create_app(name=__name__)
+    app.json_encoder = encoder.JSONEncoder
+    connexion_app = connexion.App(__name__, specification_dir='../openapi/')
+
+    # Set these since we want to replace connexion's built-in flask app and run
+    # method.
+    connexion_app.app = app
+    connexion_app.host = host
+    connexion_app.port = port
+
+    connexion_app.add_api(
+        'openapi.yaml',
+        arguments={'title': '{{appName}}'},
+        pythonic_params=True
+    )
+
+    factory.start_app(app, host=host, port=port)
 
 
 if __name__ == '__main__':
