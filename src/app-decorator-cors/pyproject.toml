@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "digital-forge-app-decorator-cors"
-version = "0.1.1"
+version = "0.1.2"
 description = "This project provides web app utility classes to give better control over Flask apps."
 authors = ["Jordan Deyton <jordan.deyton@gmail.com>"]
 license = "MIT"
@@ -9,7 +9,7 @@ packages = [ { from = "src", include = "digital" } ]
 [tool.poetry.dependencies]
 python = "^3.8"
 flask_cors = "^3.0.8"
-digital-forge-app-utils = "^0.1.0"
+digital-forge-app-utils = "^0.1.1"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.5.3"

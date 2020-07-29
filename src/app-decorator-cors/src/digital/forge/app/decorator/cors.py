@@ -4,7 +4,7 @@ This module provides the CORS decorator implementation.
 """
 import flask_cors
 
-from digital.forge.app.decorator import Decorator
+from digital.forge.app.abstract_decorator import Decorator
 
 
 class CORSDecorator(Decorator):
