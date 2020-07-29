@@ -9,7 +9,7 @@ import validators
 # See comment at bottom of start_app
 # import gevent.pywsgi
 
-from digital.forge.app.decorator import Decorator
+from digital.forge.app.abstract_decorator import Decorator
 
 
 class Factory:

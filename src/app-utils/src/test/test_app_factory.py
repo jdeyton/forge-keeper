@@ -8,7 +8,7 @@ from unittest.mock import Mock, call
 
 import flask
 
-from digital.forge.app.decorator import Decorator
+from digital.forge.app.abstract_decorator import Decorator
 from digital.forge.app.factory import Factory
 
 
