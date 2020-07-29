@@ -1,0 +1,532 @@
+openapi: 3.0.2
+info:
+  contact:
+    email: not@vailable
+  description: This API focuses on managing data archives and drones that submit data
+    to them.
+  license:
+    name: MIT
+    url: https://github.com/jdeyton/forge-keeper/blob/master/LICENSE
+  title: Forge Keeper - Conductor
+  version: 1.0.0
+servers:
+- url: http://localhost:65001
+tags:
+- description: Drones collect data.
+  name: drone
+- description: Conductors manage archives and drones.
+  name: conductor
+paths:
+  /archive:
+    get:
+      description: Get the list of data archives in the digital forge.
+      operationId: get_archives
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Archive'
+                type: array
+          description: List of archives successfully retrieved.
+        "400":
+          description: Request not understood.
+        "403":
+          description: Insufficient privileges. Access denied.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unexpected error encountered.
+      summary: Show all archives.
+      tags:
+      - conductor
+      x-openapi-router-controller: digital.forge.data.server.conductor_controller
+    put:
+      description: Add a new data archive for the digital forge.
+      operationId: add_archive
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArchiveInputs'
+        description: Required inputs for creating a data archive.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Archive'
+          description: Archive successfully added.
+        "400":
+          description: Request not understood.
+        "403":
+          description: Insufficient privileges. Access denied.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unexpected error encountered.
+      summary: Add an archive.
+      tags:
+      - conductor
+      x-openapi-router-controller: digital.forge.data.server.conductor_controller
+  /archive/{archiveUUID}:
+    delete:
+      description: Remove a data archive from the digital forge.
+      operationId: remove_archive
+      parameters:
+      - description: A unique identifier for a data archive.
+        explode: false
+        in: path
+        name: archiveUUID
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Archive successfully removed.
+        "400":
+          description: Request not understood.
+        "403":
+          description: Insufficient privileges. Access denied.
+        "404":
+          description: Requested entity not found.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unexpected error encountered.
+      summary: Remove an archive.
+      tags:
+      - conductor
+      x-openapi-router-controller: digital.forge.data.server.conductor_controller
+    get:
+      description: Get info about a specific data archive.
+      operationId: get_archive
+      parameters:
+      - description: A unique identifier for a data archive.
+        explode: false
+        in: path
+        name: archiveUUID
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Archive'
+          description: Archive info successfully retrieved.
+        "400":
+          description: Request not understood.
+        "403":
+          description: Insufficient privileges. Access denied.
+        "404":
+          description: Requested entity not found.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unexpected error encountered.
+      summary: Get an archive's info.
+      tags:
+      - conductor
+      x-openapi-router-controller: digital.forge.data.server.conductor_controller
+  /drone:
+    get:
+      description: Get the list of drones operating in the digital forge.
+      operationId: get_drones
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Drone'
+                type: array
+          description: Data index successfully initialized.
+        "400":
+          description: Request not understood.
+        "403":
+          description: Insufficient privileges. Access denied.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unexpected error encountered.
+      summary: Show all drones.
+      tags:
+      - conductor
+      x-openapi-router-controller: digital.forge.data.server.conductor_controller
+    put:
+      description: Add a new drone to the digital forge.
+      operationId: add_drone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DroneInputs'
+        description: Required inputs for creating a data drone.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: uuid
+                type: string
+          description: Drone successfully added.
+        "400":
+          description: Request not understood.
+        "403":
+          description: Insufficient privileges. Access denied.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unexpected error encountered.
+      summary: Add a drone.
+      tags:
+      - conductor
+      x-openapi-router-controller: digital.forge.data.server.conductor_controller
+  /drone/{droneUUID}:
+    delete:
+      description: Remove a drone from the digital forge.
+      operationId: remove_drone
+      parameters:
+      - description: A unique identifier for a data drone (collector).
+        explode: false
+        in: path
+        name: droneUUID
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Drone successfully removed.
+        "400":
+          description: Request not understood.
+        "403":
+          description: Insufficient privileges. Access denied.
+        "404":
+          description: Requested entity not found.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unexpected error encountered.
+      summary: Remove a drone.
+      tags:
+      - conductor
+      x-openapi-router-controller: digital.forge.data.server.conductor_controller
+    get:
+      description: Get info about a specific drone.
+      operationId: get_drone
+      parameters:
+      - description: A unique identifier for a data drone (collector).
+        explode: false
+        in: path
+        name: droneUUID
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Drone'
+          description: Drone info successfully retrieved.
+        "400":
+          description: Request not understood.
+        "403":
+          description: Insufficient privileges. Access denied.
+        "404":
+          description: Requested entity not found.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unexpected error encountered.
+      summary: Get a drone's info.
+      tags:
+      - conductor
+      x-openapi-router-controller: digital.forge.data.server.conductor_controller
+  /event:
+    put:
+      description: Report a new data event to be retained in the archives.
+      operationId: add_event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+        description: Required inputs for creating a data archive.
+      responses:
+        "200":
+          description: Event data successfully reported.
+        "400":
+          description: Request not understood.
+        "403":
+          description: Insufficient privileges. Access denied.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unexpected error encountered.
+      summary: Add a data event.
+      tags:
+      - drone
+      x-openapi-router-controller: digital.forge.data.server.drone_controller
+components:
+  parameters:
+    construct:
+      description: The identifier of a construct for collecting data.
+      explode: false
+      in: path
+      name: construct
+      required: true
+      schema:
+        type: string
+      style: simple
+    index:
+      description: The identifier of a data index or archive.
+      explode: false
+      in: path
+      name: index
+      required: true
+      schema:
+        type: string
+      style: simple
+  responses:
+    AccessDenied:
+      description: Insufficient privileges. Access denied.
+    InvalidRequest:
+      description: Request not understood.
+    NotFound:
+      description: Requested entity not found.
+    UnexpectedError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Unexpected error encountered.
+  schemas:
+    Archive:
+      description: A collection of related data.
+      example:
+        creationTime: 2020-07-25T17:32:28Z
+        dataType: float
+        name: temperature
+        description: An archive of historical temperature data.
+        units: C
+        uuid: 7b9aed83-ed5a-47bf-a02a-8530369d545c
+      properties:
+        uuid:
+          description: A unique identifier for the archive.
+          example: 7b9aed83-ed5a-47bf-a02a-8530369d545c
+          format: uuid
+          nullable: false
+          type: string
+        name:
+          description: A human readable name for the archive.
+          example: temperature
+          nullable: false
+          type: string
+        description:
+          description: A description of the archive.
+          example: An archive of historical temperature data.
+          nullable: false
+          type: string
+        dataType:
+          description: The type of data retained in the archive, e.g., integer or
+            float.
+          example: float
+          nullable: false
+          type: string
+        units:
+          description: The units for the data retained in the archive.
+          example: C
+          nullable: false
+          type: string
+        creationTime:
+          description: The date the archive was created or initialized.
+          example: 2020-07-25T17:32:28Z
+          format: date-time
+          nullable: false
+          type: string
+      required:
+      - creationTime
+      - dataType
+      - description
+      - name
+      - units
+      - uuid
+      type: object
+    ArchiveInputs:
+      description: Required inputs to create a new data archive.
+      example:
+        dataType: float
+        name: temperature
+        description: An archive of historical temperature data.
+        units: C
+      properties:
+        name:
+          description: A human readable name for the archive.
+          example: temperature
+          nullable: false
+          type: string
+        description:
+          description: A description of the archive.
+          example: An archive of historical temperature data.
+          nullable: false
+          type: string
+        dataType:
+          description: The type of data retained in the archive, e.g., integer or
+            float.
+          example: float
+          nullable: false
+          type: string
+        units:
+          description: The units for the data retained in the archive.
+          example: C
+          nullable: false
+          type: string
+      required:
+      - dataType
+      - description
+      - name
+      - units
+      type: object
+    Drone:
+      description: An entity that collects data for one or more archives.
+      example:
+        creationTime: 2020-07-25T17:35:14Z
+        name: Server room
+        description: Monitors temperature in the server room.
+        uuid: 8b9aed83-ed5a-47bf-a02a-8530369d545d
+      properties:
+        uuid:
+          description: A unique identifier for the drone.
+          example: 8b9aed83-ed5a-47bf-a02a-8530369d545d
+          format: uuid
+          nullable: false
+          type: string
+        name:
+          description: A human readable name for the drone.
+          example: Server room
+          nullable: false
+          type: string
+        description:
+          description: A description of the drone.
+          example: Monitors temperature in the server room.
+          nullable: false
+          type: string
+        creationTime:
+          description: The date the drone was created or initialized.
+          example: 2020-07-25T17:35:14Z
+          format: date-time
+          nullable: false
+          type: string
+      required:
+      - creationTime
+      - description
+      - name
+      - uuid
+      type: object
+    DroneInputs:
+      description: Required inputs to create a new data drone.
+      example:
+        name: Server room
+        description: Monitors temperature in the server room.
+      properties:
+        name:
+          description: A human readable name for the drone.
+          example: Server room
+          nullable: false
+          type: string
+        description:
+          description: A description of the drone.
+          example: Monitors temperature in the server room.
+          nullable: false
+          type: string
+      required:
+      - description
+      - name
+      type: object
+    ErrorResponse:
+      description: A response returned for errors.
+      properties:
+        code:
+          description: An error code corresponding to some internal state of the server.
+          example: 42
+          format: int32
+          nullable: false
+          type: integer
+        message:
+          description: A human-readable message explaining the error code or what
+            went wrong.
+          example: Something went wrong when computing the ultimate answer.
+          nullable: false
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    Event:
+      description: A single data point associated with an archive.
+      example:
+        droneUUID: 8b9aed83-ed5a-47bf-a02a-8530369d545d
+        archiveUUID: 7b9aed83-ed5a-47bf-a02a-8530369d545c
+        eventValue: "83.5"
+        eventTime: 2020-07-25T22:01:56Z
+      properties:
+        archiveUUID:
+          description: A unique identifier for the archive in which this data is stored.
+          example: 7b9aed83-ed5a-47bf-a02a-8530369d545c
+          format: uuid
+          nullable: false
+          type: string
+        droneUUID:
+          description: A unique identifier for the drone that observed this event.
+          example: 8b9aed83-ed5a-47bf-a02a-8530369d545d
+          format: uuid
+          nullable: false
+          type: string
+        eventTime:
+          description: The time of the data measurement/collection.
+          example: 2020-07-25T22:01:56Z
+          format: date-time
+          nullable: false
+          type: string
+        eventValue:
+          description: The archived data point collected by the drone at the event
+            time.
+          example: "83.5"
+          nullable: false
+          type: string
+      required:
+      - archiveUUID
+      - droneUUID
+      - eventTime
+      - eventValue
+      type: object
