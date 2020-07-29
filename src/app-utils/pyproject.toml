@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "digital-forge-app-utils"
-version = "0.0.0"
+version = "0.1.0"
 description = "This project provides web app utility classes to give better control over Flask apps."
 authors = ["Jordan Deyton <jordan.deyton@gmail.com>"]
 license = "MIT"
