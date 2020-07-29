@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "digital-forge-data-model"
-version = "0.0.0"
+version = "0.1.0"
 description = "Object model for the forge.digital Keeper project."
 authors = ["Jordan Deyton <jordan.deyton@gmail.com>"]
 license = "MIT"
