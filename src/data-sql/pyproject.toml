@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "digital-forge-data-sql"
-version = "0.0.0"
+version = "0.1.0"
 description = "This project provides a database ORM for storing sensor data."
 authors = ["Jordan Deyton <jordan.deyton@gmail.com>"]
 license = "MIT"
