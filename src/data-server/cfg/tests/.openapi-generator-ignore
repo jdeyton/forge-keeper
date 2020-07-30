@@ -21,6 +21,6 @@ digital/forge/data/__main__.py
 digital/forge/data/encoder.py
 digital/forge/data/util.py
 digital/forge/data/typing_utils.py
-digital/forge/data/controllers/**
+digital/forge/data/server/**
 digital/forge/data/models/**
 digital/forge/data/openapi/**
