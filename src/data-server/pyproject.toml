@@ -15,7 +15,7 @@ Flask = "^1.1.2"
 digital-forge-app-utils = "^0.1.3"
 digital-forge-app-decorator-cors = "^0.1.2"
 digital-forge-app-decorator-sqlalchemy = "^0.1.1"
-digital-forge-data-model = "^0.2.0"
+digital-forge-data-model = "^0.2.1"
 digital-forge-data-sql = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
