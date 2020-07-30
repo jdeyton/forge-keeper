@@ -19,6 +19,24 @@ class Archive(Model):
     Do not edit the class manually.
     """
 
+    openapi_types = {
+        'uuid': str,
+        'name': str,
+        'description': str,
+        'data_type': str,
+        'units': str,
+        'creation_time': datetime
+    }
+
+    attribute_map = {
+        'uuid': 'uuid',
+        'name': 'name',
+        'description': 'description',
+        'data_type': 'dataType',
+        'units': 'units',
+        'creation_time': 'creationTime'
+    }
+
     def __init__(self, uuid=None, name=None, description=None, data_type=None, units=None, creation_time=None):  # noqa: E501
         """Archive - a model defined in OpenAPI
 
@@ -35,23 +53,6 @@ class Archive(Model):
         :param creation_time: The creation_time of this Archive.  # noqa: E501
         :type creation_time: datetime
         """
-        self.openapi_types = {
-            'uuid': str,
-            'name': str,
-            'description': str,
-            'data_type': str,
-            'units': str,
-            'creation_time': datetime
-        }
-
-        self.attribute_map = {
-            'uuid': 'uuid',
-            'name': 'name',
-            'description': 'description',
-            'data_type': 'dataType',
-            'units': 'units',
-            'creation_time': 'creationTime'
-        }
 
         if uuid is None:
             raise ValueError('`uuid` is a required value')

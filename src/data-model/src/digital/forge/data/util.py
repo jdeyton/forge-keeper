@@ -103,19 +103,16 @@ def deserialize_model(data, klass):
     :param klass: class literal.
     :return: model object.
     """
-    instance = klass()
-
-    if not instance.openapi_types:
+    if not klass.openapi_types:
         return data
 
-    for attr, attr_type in six.iteritems(instance.openapi_types):
-        if data is not None \
-                and instance.attribute_map[attr] in data \
-                and isinstance(data, (list, dict)):
-            value = data[instance.attribute_map[attr]]
-            setattr(instance, attr, _deserialize(value, attr_type))
-
-    return instance
+    kwargs = {}
+    if data is not None and isinstance(data, (list, dict)):
+        for attr, attr_type in six.iteritems(klass.openapi_types):
+            if klass.attribute_map[attr] in data:
+                value = data[klass.attribute_map[attr]]
+                kwargs[attr] = _deserialize(value, attr_type)
+    return klass(**kwargs)
 
 
 def _deserialize_list(data, boxed_type):

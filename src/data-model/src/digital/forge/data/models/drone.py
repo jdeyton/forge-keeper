@@ -19,6 +19,20 @@ class Drone(Model):
     Do not edit the class manually.
     """
 
+    openapi_types = {
+        'uuid': str,
+        'name': str,
+        'description': str,
+        'creation_time': datetime
+    }
+
+    attribute_map = {
+        'uuid': 'uuid',
+        'name': 'name',
+        'description': 'description',
+        'creation_time': 'creationTime'
+    }
+
     def __init__(self, uuid=None, name=None, description=None, creation_time=None):  # noqa: E501
         """Drone - a model defined in OpenAPI
 
@@ -31,19 +45,6 @@ class Drone(Model):
         :param creation_time: The creation_time of this Drone.  # noqa: E501
         :type creation_time: datetime
         """
-        self.openapi_types = {
-            'uuid': str,
-            'name': str,
-            'description': str,
-            'creation_time': datetime
-        }
-
-        self.attribute_map = {
-            'uuid': 'uuid',
-            'name': 'name',
-            'description': 'description',
-            'creation_time': 'creationTime'
-        }
 
         if uuid is None:
             raise ValueError('`uuid` is a required value')

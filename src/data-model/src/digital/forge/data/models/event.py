@@ -19,6 +19,20 @@ class Event(Model):
     Do not edit the class manually.
     """
 
+    openapi_types = {
+        'archive_uuid': str,
+        'drone_uuid': str,
+        'event_time': datetime,
+        'event_value': str
+    }
+
+    attribute_map = {
+        'archive_uuid': 'archiveUUID',
+        'drone_uuid': 'droneUUID',
+        'event_time': 'eventTime',
+        'event_value': 'eventValue'
+    }
+
     def __init__(self, archive_uuid=None, drone_uuid=None, event_time=None, event_value=None):  # noqa: E501
         """Event - a model defined in OpenAPI
 
@@ -31,19 +45,6 @@ class Event(Model):
         :param event_value: The event_value of this Event.  # noqa: E501
         :type event_value: str
         """
-        self.openapi_types = {
-            'archive_uuid': str,
-            'drone_uuid': str,
-            'event_time': datetime,
-            'event_value': str
-        }
-
-        self.attribute_map = {
-            'archive_uuid': 'archiveUUID',
-            'drone_uuid': 'droneUUID',
-            'event_time': 'eventTime',
-            'event_value': 'eventValue'
-        }
 
         if archive_uuid is None:
             raise ValueError('`archive_uuid` is a required value')

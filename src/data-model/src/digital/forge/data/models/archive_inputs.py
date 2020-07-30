@@ -18,6 +18,20 @@ class ArchiveInputs(Model):
     Do not edit the class manually.
     """
 
+    openapi_types = {
+        'name': str,
+        'description': str,
+        'data_type': str,
+        'units': str
+    }
+
+    attribute_map = {
+        'name': 'name',
+        'description': 'description',
+        'data_type': 'dataType',
+        'units': 'units'
+    }
+
     def __init__(self, name=None, description=None, data_type=None, units=None):  # noqa: E501
         """ArchiveInputs - a model defined in OpenAPI
 
@@ -30,19 +44,6 @@ class ArchiveInputs(Model):
         :param units: The units of this ArchiveInputs.  # noqa: E501
         :type units: str
         """
-        self.openapi_types = {
-            'name': str,
-            'description': str,
-            'data_type': str,
-            'units': str
-        }
-
-        self.attribute_map = {
-            'name': 'name',
-            'description': 'description',
-            'data_type': 'dataType',
-            'units': 'units'
-        }
 
         if name is None:
             raise ValueError('`name` is a required value')

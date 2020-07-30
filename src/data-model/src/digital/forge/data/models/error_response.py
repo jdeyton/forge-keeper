@@ -18,6 +18,16 @@ class ErrorResponse(Model):
     Do not edit the class manually.
     """
 
+    openapi_types = {
+        'code': int,
+        'message': str
+    }
+
+    attribute_map = {
+        'code': 'code',
+        'message': 'message'
+    }
+
     def __init__(self, code=None, message=None):  # noqa: E501
         """ErrorResponse - a model defined in OpenAPI
 
@@ -26,15 +36,6 @@ class ErrorResponse(Model):
         :param message: The message of this ErrorResponse.  # noqa: E501
         :type message: str
         """
-        self.openapi_types = {
-            'code': int,
-            'message': str
-        }
-
-        self.attribute_map = {
-            'code': 'code',
-            'message': 'message'
-        }
 
         if code is None:
             raise ValueError('`code` is a required value')

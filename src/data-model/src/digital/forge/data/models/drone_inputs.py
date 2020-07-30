@@ -18,6 +18,16 @@ class DroneInputs(Model):
     Do not edit the class manually.
     """
 
+    openapi_types = {
+        'name': str,
+        'description': str
+    }
+
+    attribute_map = {
+        'name': 'name',
+        'description': 'description'
+    }
+
     def __init__(self, name=None, description=None):  # noqa: E501
         """DroneInputs - a model defined in OpenAPI
 
@@ -26,15 +36,6 @@ class DroneInputs(Model):
         :param description: The description of this DroneInputs.  # noqa: E501
         :type description: str
         """
-        self.openapi_types = {
-            'name': str,
-            'description': str
-        }
-
-        self.attribute_map = {
-            'name': 'name',
-            'description': 'description'
-        }
 
         if name is None:
             raise ValueError('`name` is a required value')
