@@ -96,8 +96,7 @@ class Factory:
             except ValueError:
                 raise ValueError('Port must be an integer between 1 and 65535')
 
-        # I don't feel like fighting with Visual C++ tools to get this working
-        # from Windows, so for now I'm going to use the Flask dev server.
+        # TODO: Switch this over from the Flask dev server to gevent.
         # server = gevent.pywsgi.WSGIServer((host, port), app)
         # server.serve_forever()
-        app.run()
+        app.run(host=host, port=port)
