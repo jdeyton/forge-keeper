@@ -16,6 +16,7 @@ PKG_DIR = src/digital/forge/data
 	$(CP) cfg/src/.openapi-generator-ignore src/
 	$(OPENAPI_CLI) generate -g python-flask -i ../data.json -o src -c cfg/codegen.json -t cfg/src/templates
 	$(MV) $(PKG_DIR)/__main__.py $(PKG_DIR)/server
+	$(MV) $(PKG_DIR)/encoder.py $(PKG_DIR)/server
 	$(RMDIR) $(PKG_DIR)/models
 	$(RMDIR) $(PKG_DIR)/test
 	$(RM) src/.openapi-generator-ignore

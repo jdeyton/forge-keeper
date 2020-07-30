@@ -6,10 +6,10 @@ This module serves as the main entry point for the server process.
 
 import connexion
 
-from digital.forge.data import encoder
 from digital.forge.app.factory import Factory as AppFactory
 from digital.forge.app.decorator.cors import CORSDecorator
 from digital.forge.app.decorator.sqlalchemy import SQLAlchemyDecorator
+from digital.forge.data.server import encoder
 
 
 def main():

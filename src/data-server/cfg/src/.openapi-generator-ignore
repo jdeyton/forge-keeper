@@ -17,7 +17,6 @@ tox.ini
 digital/forge/data/__init__.py
 
 # Other files that are not necessary at this time:
-digital/forge/data/encoder.py
 digital/forge/data/util.py
 digital/forge/data/typing_utils.py
 digital/forge/data/models/**
