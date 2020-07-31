@@ -6,7 +6,11 @@ This module provides the DroneController implementation.
 import connexion
 
 from digital.forge.data.models.error_response import ErrorResponse
-from digital.forge.data.models.event import Event
+from digital.forge.data.models.event import Event as APIEvent
+from digital.forge.data.sql.model import Event as SQLEvent
+
+from digital.forge.data.server.tools import get_db_session
+from sqlalchemy.exc import SQLAlchemyError, NoReferenceError
 
 
 def add_event(event=None):
@@ -20,5 +24,23 @@ def add_event(event=None):
     :rtype: None
     """
     if connexion.request.is_json:
-        event = Event.from_dict(connexion.request.get_json())
-    return 'Not implemented', 501
+        event = APIEvent.from_dict(connexion.request.get_json())
+
+    if event is None:
+        return 'Invalid input', 400
+
+    sql_event = SQLEvent(
+        archive_uuid=event.archive_uuid,
+        drone_uuid=event.drone_uuid,
+        event_time=event.event_time,
+        event_value=event.event_value,
+    )
+
+    try:
+        db = get_db_session()
+        db.add(sql_event)
+        db.commit()
+    except SQLAlchemyError as err:
+        return ErrorResponse(code=1, message='Error writing: ' + str(err)), 500
+
+    return 'Added', 200
