@@ -31,8 +31,8 @@ CREATE TABLE drone (
 ALTER TABLE drone OWNER TO conductor;
 
 CREATE TABLE event (
-    archive_uuid uuid NOT NULL,
-    drone_uuid   uuid NOT NULL,
+    archive_uuid uuid NOT NULL REFERENCES archive(archive_uuid),
+    drone_uuid   uuid NOT NULL REFERENCES drone(drone_uuid),
     event_time   timestamp NOT NULL,
     event_value  text NOT NULL,
     PRIMARY KEY (archive_uuid, drone_uuid, event_time)
