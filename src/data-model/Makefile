@@ -18,7 +18,7 @@ clean: clean-dist
 	$(RMDIR) src/digital/forge/data/openapi
 	$(RMDIR) src/digital/forge/data/test
 	$(RM) src/.openapi-generator-ignore
-	$(POETRY) run autoflake --in-place --recursive --remove-all-unused-imports src/digital
+	$(POETRY) run autoflake --in-place --recursive --remove-all-unused-imports --ignore-init-module-imports src/digital
 	$(TOUCH) .codegen-src
 
 # Test code:
