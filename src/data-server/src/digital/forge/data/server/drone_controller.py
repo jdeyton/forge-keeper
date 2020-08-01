@@ -42,7 +42,7 @@ def add_event(event=None):
         db.commit()
     except IntegrityError as err:
         return ErrorResponse(
-            code=1,
+            code=2,
             message='Possible invalid UUID: ' + str(err)
         )
     except SQLAlchemyError as err:
