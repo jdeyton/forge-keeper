@@ -10,7 +10,7 @@ from digital.forge.data.models.event import Event as APIEvent
 from digital.forge.data.sql.model import Event as SQLEvent
 
 from digital.forge.data.server.tools import get_db_session
-from sqlalchemy.exc import SQLAlchemyError, NoReferenceError
+from sqlalchemy.exc import SQLAlchemyError, NoReferenceError, IntegrityError
 
 
 def add_event(event=None):
@@ -40,7 +40,12 @@ def add_event(event=None):
         db = get_db_session()
         db.add(sql_event)
         db.commit()
+    except IntegrityError as err:
+        return ErrorResponse(
+            code=1,
+            message='Possible invalid UUID: ' + str(err)
+        )
     except SQLAlchemyError as err:
-        return ErrorResponse(code=1, message='Error writing: ' + str(err)), 500
+        return ErrorResponse(code=1, message=str(err)), 500
 
     return 'Added', 200
