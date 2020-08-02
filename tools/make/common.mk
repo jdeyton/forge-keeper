@@ -12,6 +12,7 @@ clean:
 # System commands:
 CP ?= /bin/cp -f
 CURL ?= /bin/curl
+MKDIR ?= /bin/mkdir -p
 MV ?= /bin/mv -f
 RM ?= /bin/rm -f
 RMDIR ?= /bin/rmdir
