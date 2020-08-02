@@ -5,12 +5,13 @@ This module provides the DroneController implementation.
 
 import connexion
 
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+
 from digital.forge.data.models.error_response import ErrorResponse
 from digital.forge.data.models.event import Event as APIEvent
 from digital.forge.data.sql.model import Event as SQLEvent
 
 from digital.forge.data.server.tools import get_db_session
-from sqlalchemy.exc import SQLAlchemyError, NoReferenceError, IntegrityError
 
 
 def add_event(event=None):

@@ -58,7 +58,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Archive'
+                format: uuid
+                type: string
           description: Archive successfully added.
         "400":
           description: Request not understood.

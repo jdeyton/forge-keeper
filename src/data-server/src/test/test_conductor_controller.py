@@ -8,6 +8,7 @@ from __future__ import absolute_import
 from datetime import datetime
 import unittest
 from unittest.mock import MagicMock, patch
+import uuid
 
 from dateutil.tz import tzutc
 from flask import json
@@ -51,6 +52,12 @@ class TestConductorController(BaseTestCase):
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
+
+        new_uuid = response.data.decode('utf-8').replace('"', '').rstrip('\n')
+        try:
+            uuid.UUID(new_uuid)
+        except ValueError:
+            self.fail('A UUID was not returned!')
 
         # An SQL model for the Archive should have been committed to the DB.
         mock_db.add.assert_called_once()
@@ -149,6 +156,12 @@ class TestConductorController(BaseTestCase):
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
+
+        new_uuid = response.data.decode('utf-8').replace('"', '').rstrip('\n')
+        try:
+            uuid.UUID(new_uuid)
+        except ValueError:
+            self.fail('A UUID was not returned!')
 
         # An SQL model for the Drone should have been committed to the DB.
         mock_db.add.assert_called_once()

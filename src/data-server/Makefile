@@ -18,9 +18,9 @@ PKG_DIR = src/digital/forge/data
 	$(MV) $(PKG_DIR)/__main__.py $(PKG_DIR)/server
 	$(MV) $(PKG_DIR)/encoder.py $(PKG_DIR)/server
 	$(RMDIR) $(PKG_DIR)/models
-	$(RMDIR) $(PKG_DIR)/test
+	-$(RMDIR) $(PKG_DIR)/test
 	$(RM) src/.openapi-generator-ignore
-	$(POETRY) run autoflake --in-place --recursive --remove-all-unused-imports src/digital
+	$(POETRY) run autoflake --in-place --recursive --remove-all-unused-imports --ignore-init-module-imports src/digital
 	$(TOUCH) .codegen-src
 
 # Test code:

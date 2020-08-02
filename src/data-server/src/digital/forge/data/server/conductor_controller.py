@@ -31,8 +31,10 @@ def add_archive(archive_inputs=None):
     if archive_inputs is None:
         return 'Invalid input', 400
 
+    new_uuid = str(uuid.uuid4())
+
     archive = SQLArchive(
-        archive_uuid=str(uuid.uuid4()),
+        archive_uuid=new_uuid,
         name=archive_inputs.name,
         description=archive_inputs.description,
         data_type=archive_inputs.data_type,
@@ -43,7 +45,7 @@ def add_archive(archive_inputs=None):
     db.add(archive)
     db.commit()
 
-    return 'Added', 200
+    return new_uuid, 200
 
 
 def add_drone(drone_inputs=None):
@@ -62,8 +64,10 @@ def add_drone(drone_inputs=None):
     if drone_inputs is None:
         return 'Invalid input', 400
 
+    new_uuid = str(uuid.uuid4())
+
     drone = SQLDrone(
-        drone_uuid=str(uuid.uuid4()),
+        drone_uuid=new_uuid,
         name=drone_inputs.name,
         description=drone_inputs.description,
     )
@@ -72,7 +76,7 @@ def add_drone(drone_inputs=None):
     db.add(drone)
     db.commit()
 
-    return 'Added', 200
+    return new_uuid, 200
 
 
 def get_archive(archive_uuid):
