@@ -14,6 +14,9 @@ digital-forge-data-client = "^0.1.0"
 [tool.poetry.dev-dependencies]
 pylint = "^2.5.3"
 
+[tool.poetry.scripts]
+py-drone = "digital.forge.drone.__main__:main"
+
 [[tool.poetry.source]]
 name = "forge-pypi"
 url = "http://localhost:60001/simple/"
