@@ -3,7 +3,6 @@
 	<name>forge-keeper-data-client</name>
 	<comment></comment>
 	<projects>
-		<project>forge-keeper-data-model</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
