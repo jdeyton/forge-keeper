@@ -22,7 +22,7 @@ class Reader(Thread):
         """
         The default constructor.
 
-        :param data_queue: The queue that will receive timestamped data.
+        :param data_queue: The data_queue that will receive timestamped data.
         :type data_queue: queue.Queue
         :param port: The serial port to read.
         :type port: str
@@ -32,9 +32,9 @@ class Reader(Thread):
         super().__init__(kwargs=kwargs)
 
         if data_queue is None:
-            raise ValueError('`queue` is a required argument')
+            raise ValueError('`data_queue` is a required argument')
         if not isinstance(data_queue, Queue):
-            raise ValueError('`queue` must be a queue.Queue')
+            raise ValueError('`data_queue` must be a queue.Queue')
 
         if port is None:
             raise ValueError('`port` is a required argument')

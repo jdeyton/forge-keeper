@@ -4,7 +4,6 @@ This module tests the Reader class.
 """
 import datetime
 import queue
-import time
 import unittest
 from unittest.mock import patch
 
@@ -74,10 +73,10 @@ class TestReader(unittest.TestCase):
         #   * Mock the readline() method's return value
         mock_constructor.return_value. \
             __enter__.return_value.    \
-            readline.return_value = 'foo'
+            readline.return_value = b'foo,bar\n'
 
         # Create a reader.
-        data_queue = queue.Queue(1)
+        data_queue = queue.Queue(1)  # A small queue reduces data for the test.
         port = '/dev/ttyS0'
         reader = Reader(data_queue=data_queue, port=port)
         # Start reading.
@@ -85,14 +84,14 @@ class TestReader(unittest.TestCase):
         # Pull some data off the queue and check the contents.
         timestamp, data = data_queue.get(block=True, timeout=5)
         self.assertIsInstance(timestamp, datetime.datetime)
-        self.assertEqual(data, 'foo')
+        self.assertEqual(data, b'foo,bar\n')
         # Stop the reader.
         reader.stop(timeout=0)
         # Pull some more data off (it is likely blocked due to queue size 1).
         timestamp, data = data_queue.get(block=True, timeout=5)
         self.assertIsInstance(timestamp, datetime.datetime)
-        self.assertEqual(data, 'foo')
-        # Check the reader is no longer active (you can't start it again)
+        self.assertEqual(data, b'foo,bar\n')
+        # Check the reader is no longer active.
         self.assertFalse(reader.is_alive())
 
 
