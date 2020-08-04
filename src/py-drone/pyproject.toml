@@ -10,6 +10,7 @@ packages = [ { from = "src", include = "digital" } ]
 python = "^3.8"
 digital-forge-data-model = "^0.2.2"
 digital-forge-data-client = "^0.1.0"
+PySerial = "^3.4"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.5.3"
