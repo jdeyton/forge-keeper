@@ -6,11 +6,13 @@ an upstream server.
 
 from collections.abc import Iterable
 import queue
+import sys
 from threading import Thread
 import uuid
 
-from digital.forge.data.models import Event
 from digital.forge.data.api.drone_api import DroneApi
+from digital.forge.data.exceptions import ApiException
+from digital.forge.data.models import Event
 
 
 class Sender(Thread):
@@ -72,25 +74,29 @@ class Sender(Thread):
             # more regularly.
             try:
                 time, data = self._queue.get(block=True, timeout=1)
+
+                # The data coming in is in bytes and may contain newlines.
+                data = data.decode().rstrip()
+
+                # Ignore any errors coming in.
+                if data.startswith('Error: '):
+                    raise SenderDataError(data)
+
+                # Send a datum to each archive until either list is exhausted.
+                for archive, data in zip(self._archives, data.split(',')):
+                    self._api.add_event(event=Event(
+                        archive_uuid=archive,
+                        drone_uuid=self._drone,
+                        event_time=time,
+                        event_value=data,
+                    ))
             except queue.Empty:
-                continue
-
-            # The data coming in is in bytes and may contain newlines.
-            data = data.decode().rstrip()
-
-            # Ignore any errors coming in.
-            if data.startswith('Error: '):
-                print(data)
-                continue
-
-            # Send a datum to each archive until either list is exhausted.
-            for archive, data in zip(self._archives, data.split(',')):
-                self._api.add_event(event=Event(
-                    archive_uuid=archive,
-                    drone_uuid=self._drone,
-                    event_time=time,
-                    event_value=data,
-                ))
+                # Timed out while waiting for something in the queue.
+                pass
+            except SenderDataError as err:
+                print('Data ' + str(err), file=sys.stderr)
+            except ApiException as err:
+                print('API Error: ' + str(err), file=sys.stderr)
 
     def stop(self, timeout=None):
         """
@@ -100,3 +106,15 @@ class Sender(Thread):
         """
         self._run = False
         self.join(timeout)
+
+
+class SenderError(Exception):
+    """
+    A class for general exceptions for the sender.
+    """
+
+
+class SenderDataError(SenderError):
+    """
+    A class indicating an error reported in the data.
+    """

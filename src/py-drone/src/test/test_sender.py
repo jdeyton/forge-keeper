@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 from digital.forge.data.models import Event
 from digital.forge.drone import Sender
+from digital.forge.data.exceptions import ApiException
 
 
 class TestSender(unittest.TestCase):
@@ -133,6 +134,18 @@ class TestSender(unittest.TestCase):
         time.sleep(2)  # This gives the sender a few moments...
 
         add_event.assert_not_called()
+
+        # ---- Check an exception in the API. ---- #
+        # This is not expected to stop the sender.
+        add_event.side_effect = ApiException('Fake exception')
+        data = (datetime.now(), b'hello,world\n')
+        data_queue.put_nowait(data)
+
+        time.sleep(2)  # This gives the sender a few moments...
+
+        add_event.assert_called()
+
+        self.assertTrue(sender.is_alive())
 
         # ---- Stop the sender. ---- #
         sender.stop()  # This blocks.
