@@ -60,12 +60,13 @@ class Reader(Thread):
         """
         Starts reading sensor data.
         """
-        with serial.Serial(self._port, self._rate, timeout=1) as connection:
+        with serial.Serial(self._port, self._rate, timeout=5) as connection:
             self._run = True
             while self._run:
                 data = connection.readline()
-                time = datetime.now()
-                self._data_queue.put((time, data), block=True)
+                if data:
+                    time = datetime.now()
+                    self._data_queue.put((time, data), block=True)
 
     def stop(self, timeout=None):
         """
