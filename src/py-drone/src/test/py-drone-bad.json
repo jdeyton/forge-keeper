@@ -1,0 +1,8 @@
+{
+    "port": "/dev/ttyS0",
+    "rate": 9600,
+    "archives": [
+        "6adb613e-9642-4264-af53-cec6d96dfdae",
+        "b5280bf4-786e-4769-f2ce-88e1d24344de"
+    ]
+}
