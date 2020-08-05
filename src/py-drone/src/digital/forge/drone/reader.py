@@ -6,10 +6,12 @@ from an Arduino.
 
 from datetime import datetime
 import re
+import sys
 from queue import Queue
 from threading import Thread
 
 import serial
+from serial.serialutil import SerialException
 
 
 class Reader(Thread):
@@ -60,13 +62,19 @@ class Reader(Thread):
         """
         Starts reading sensor data.
         """
-        with serial.Serial(self._port, self._rate, timeout=5) as connection:
-            self._run = True
-            while self._run:
-                data = connection.readline()
-                if data:
-                    time = datetime.now()
-                    self._data_queue.put((time, data), block=True)
+        try:
+            with serial.Serial(self._port, self._rate, timeout=5) as conn:
+                self._run = True
+                while self._run:
+                    data = conn.readline()
+                    if data:
+                        time = datetime.now()
+                        self._data_queue.put((time, data), block=True)
+        except SerialException as err:
+            print(
+                'Error reading {}: {}'.format(self._port, str(err)),
+                file=sys.stderr
+            )
 
     def stop(self, timeout=None):
         """

@@ -7,6 +7,8 @@ import queue
 import unittest
 from unittest.mock import patch
 
+from serial.serialutil import SerialException
+
 from digital.forge.drone import Reader
 
 
@@ -92,6 +94,25 @@ class TestReader(unittest.TestCase):
         self.assertIsInstance(timestamp, datetime.datetime)
         self.assertEqual(data, b'foo,bar\n')
         # Check the reader is no longer active.
+        self.assertFalse(reader.is_alive())
+
+    @patch('digital.forge.drone.reader.serial.Serial')
+    def test_exception_on_connection(self, mock_constructor):
+        """
+        Tests that the thread stops if the connection can't be opened.
+        """
+        mock_constructor.side_effect = SerialException('fake exception')
+
+        # Create a reader.
+        data_queue = queue.Queue(1)  # A small queue reduces data for the test.
+        port = '/dev/ttyS0'
+        reader = Reader(data_queue=data_queue, port=port)
+
+        # Start reading. The exception should be caught.
+        reader.start()
+
+        # Wait for the thread to close: it should be soon.
+        reader.join(timeout=1)
         self.assertFalse(reader.is_alive())
 
 
