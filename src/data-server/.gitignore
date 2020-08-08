@@ -2,3 +2,4 @@
 /.codegen-src
 /.codegen-tests
 /dist/
+/forge-data-server-docker.tgz

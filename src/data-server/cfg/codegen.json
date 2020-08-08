@@ -6,9 +6,9 @@
     "server": {
         "cors": 42,
         "host": "0.0.0.0",
-        "port": 65001
+        "port": 50080
     },
     "database": {
-        "url": "postgresql://conductor:conductor@localhost:5432/forge_data"
+        "type": "postgresql"
     }
 }

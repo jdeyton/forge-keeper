@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+
+    forge-data-server:
+        image: forge-data-server
+        command: -h 0.0.0.0 -p 80
+        build:
+            context: .
+        restart: always
+        ports:
+            - target: 80
+              published: 50080
+              protocol: tcp
+        secrets:
+            - forge-keeper-psql-host
+            - forge-keeper-psql-port
+            - forge-keeper-psql-name
+            - forge-keeper-psql-conductor-user
+            - forge-keeper-psql-conductor-pass
+
+secrets:
+    forge-keeper-psql-host:
+        external: true
+        name: forge-keeper-psql-host
+    forge-keeper-psql-port:
+        external: true
+        name: forge-keeper-psql-port
+    forge-keeper-psql-name:
+        external: true
+        name: forge-keeper-psql-name
+    forge-keeper-psql-conductor-user:
+        external: true
+        name: forge-keeper-psql-conductor-user
+    forge-keeper-psql-conductor-pass:
+        external: true
+        name: forge-keeper-psql-conductor-pass

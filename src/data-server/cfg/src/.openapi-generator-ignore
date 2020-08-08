@@ -4,7 +4,6 @@
 .dockerignore
 .gitignore
 .travis.yml
-Dockerfile
 git_push.sh
 README.md
 requirements.txt

@@ -43,3 +43,7 @@ clean-codegen:
 
 # Can't build wheels without the source!
 dist: .codegen
+
+forge-data-server-docker.tgz: .codegen dist
+	docker build -f src/Dockerfile --network host -t forge-data-server context
+	docker save forge-data-server:latest | gzip > $@
