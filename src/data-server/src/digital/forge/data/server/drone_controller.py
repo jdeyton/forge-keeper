@@ -45,8 +45,11 @@ def add_event(event=None):
         return ErrorResponse(
             code=2,
             message='Possible invalid UUID: ' + str(err)
-        )
+        ), 500
     except SQLAlchemyError as err:
-        return ErrorResponse(code=1, message=str(err)), 500
+        return ErrorResponse(
+            code=1,
+            message='Error writing: ' + str(err)
+        ), 500
 
     return 'Added', 200
