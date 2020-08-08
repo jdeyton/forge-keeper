@@ -1,0 +1,88 @@
+version: '3.7'
+
+services:
+
+    database:
+        image: forge-keeper-db
+        build:
+            context: ./context
+        restart: always
+        environment:
+            POSTGRES_USER_FILE: /run/secrets/psql-postgres-user
+            POSTGRES_PASSWORD_FILE: /run/secrets/psql-postgres-pass
+        ports:
+            - target: 5432
+              published: 55432
+              protocol: tcp
+        secrets:
+            - psql-host
+            - psql-port
+            - psql-name
+            - psql-conductor-user
+            - psql-conductor-pass
+            - psql-drone-user
+            - psql-drone-pass
+            - psql-monitor-user
+            - psql-monitor-pass
+            - psql-postgres-user
+            - psql-postgres-pass
+        volumes:
+            - type: volume
+              source: forge-keeper-psql
+              target: /var/lib/postgresql/data
+
+    web:
+        image: forge-keeper
+        command: -h 0.0.0.0 -p 80
+        build:
+            context: .
+        restart: always
+        ports:
+            - target: 80
+              published: 50080
+              protocol: tcp
+        secrets:
+            - psql-host
+            - psql-port
+            - psql-name
+            - psql-conductor-user
+            - psql-conductor-pass
+
+secrets:
+    psql-host:
+        external: true
+        name: forge-keeper-psql-host
+    psql-port:
+        external: true
+        name: forge-keeper-psql-port
+    psql-name:
+        external: true
+        name: forge-keeper-psql-name
+    psql-conductor-user:
+        external: true
+        name: forge-keeper-psql-conductor-user
+    psql-conductor-pass:
+        external: true
+        name: forge-keeper-psql-conductor-pass
+    psql-drone-user:
+        external: true
+        name: forge-keeper-psql-drone-user
+    psql-drone-pass:
+        external: true
+        name: forge-keeper-psql-drone-pass
+    psql-monitor-user:
+        external: true
+        name: forge-keeper-psql-monitor-user
+    psql-monitor-pass:
+        external: true
+        name: forge-keeper-psql-monitor-pass
+    psql-postgres-user:
+        external: true
+        name: forge-keeper-psql-postgres-user
+    psql-postgres-pass:
+        external: true
+        name: forge-keeper-psql-postgres-pass
+
+volumes:
+    forge-keeper-psql:
+

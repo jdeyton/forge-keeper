@@ -22,3 +22,9 @@ After ensuring the necessary secrets are in place:
 ```
 docker stack deploy -c stack.yml forge-keeper
 ```
+
+## How to Observe Logs
+
+```
+docker service logs --no-trunc --follow forge-keeper_web
+```

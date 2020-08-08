@@ -32,11 +32,11 @@ def main(argv=None):
 
     factory = AppFactory()
     factory.add_decorator(CORSDecorator())
-    db_user = _get_secret('forge-keeper-psql-conductor-user')
-    db_pass = _get_secret('forge-keeper-psql-conductor-pass')
-    db_host = _get_secret('forge-keeper-psql-host')
-    db_port = _get_secret('forge-keeper-psql-port')
-    db_name = _get_secret('forge-keeper-psql-name')
+    db_user = _get_secret('psql-conductor-user')
+    db_pass = _get_secret('psql-conductor-pass')
+    db_host = _get_secret('psql-host')
+    db_port = _get_secret('psql-port')
+    db_name = _get_secret('psql-name')
     factory.add_decorator(SQLAlchemyDecorator(
         'postgresql://%s:%s@%s:%s/%s' %
         (db_user, db_pass, db_host, db_port, db_name)
