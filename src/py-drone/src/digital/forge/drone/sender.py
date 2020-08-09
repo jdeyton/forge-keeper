@@ -11,6 +11,8 @@ from threading import Thread
 import uuid
 
 from digital.forge.data.api.drone_api import DroneApi
+from digital.forge.data.api_client import ApiClient
+from digital.forge.data.configuration import Configuration
 from digital.forge.data.exceptions import ApiException
 from digital.forge.data.models import Event
 
@@ -21,7 +23,7 @@ class Sender(Thread):
     service.
     """
 
-    def __init__(self, data_queue=None, drone=None, archives=None, **kwargs):
+    def __init__(self, data_queue=None, url=None, drone=None, archives=None, **kwargs):
         """
         The default constructor.
 
@@ -61,7 +63,12 @@ class Sender(Thread):
         self._archives = archives
         self._drone = drone
 
-        self._api = DroneApi()
+        if url is None:
+            config = Configuration(host=url)
+            client = ApiClient(configuration=config)
+            self._api = DroneApi(api_client=client)
+        else:
+            self._api = DroneApi()
         self._run = False
 
     def run(self):

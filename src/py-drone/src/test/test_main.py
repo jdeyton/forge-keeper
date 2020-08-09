@@ -2,11 +2,8 @@
 """
 This module tests some of the main script functionality.
 """
-import datetime
 import pathlib
-import queue
 import unittest
-from unittest.mock import patch
 
 from digital.forge.drone.__main__ import _load_config
 
@@ -17,8 +14,9 @@ class TestMain(unittest.TestCase):
     """
 
     def setUp(self):
-        current_dir = pathlib.Path(__file__).parent.absolute() 
+        current_dir = pathlib.Path(__file__).parent.absolute()
         self.cfg = current_dir.joinpath('py-drone.json')
+        self.cfg_with_url = current_dir.joinpath('py-drone-url.json')
         self.bad_cfg = current_dir.joinpath('py-drone-bad.json')
 
     def test_load_config(self):
@@ -35,9 +33,12 @@ class TestMain(unittest.TestCase):
             ]
         }
         actual = _load_config(self.cfg)
-        
         self.assertEqual(expected, actual)
-        
+
+        expected['url'] = "https://foobar:12345"
+        actual = _load_config(self.cfg_with_url)
+        self.assertEqual(expected, actual)
+
         with self.assertRaises(ValueError):
             _load_config(self.bad_cfg)
 
