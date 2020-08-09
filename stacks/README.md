@@ -2,8 +2,11 @@
 
 ## backend
 
-This is the primary forge-keeper backend currently consisting of a database and
-web server hosting the API.
+This is the primary forge-keeper backend. Components included are:
+
+- An NGINX reverse proxy that handles external requests.
+- A Flask-based web app that provides the backend business logic.
+- A PostgreSQL database hosting the raw data.
 
 ### How to Deploy
 

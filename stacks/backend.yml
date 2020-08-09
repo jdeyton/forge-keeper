@@ -48,7 +48,20 @@ services:
             - psql-conductor-user
             - psql-conductor-pass
 
+    reverse-proxy:
+        image: nginx:1.19.1
+        ports:
+            - target: 80
+              published: 80
+              protocol: tcp
+        secrets:
+            - source: nginx-forward
+              target: /etc/nginx/conf.d/default.conf
+
 secrets:
+    nginx-forward:
+        external: true
+        name: forge-keeper-nginx-forward
     psql-host:
         external: true
         name: forge-keeper-psql-host
