@@ -63,7 +63,7 @@ class Sender(Thread):
         self._archives = archives
         self._drone = drone
 
-        if url is None:
+        if url is not None:
             config = Configuration(host=url)
             client = ApiClient(configuration=config)
             self._api = DroneApi(api_client=client)
