@@ -22,7 +22,11 @@ class TestReader(unittest.TestCase):
         Tests the valid ranges of input arguments.
         """
         data_queue = queue.Queue()
-        valid_ports = ['/dev/ttyS%d' % (i) for i in range(0, 4)]
+        valid_ports = \
+            ['/dev/ttyACM%d' % i for i in range(0, 4)] + \
+            ['/dev/ttyS%d' % i for i in range(0, 4)] + \
+            ['/dev/ttyUSB%d' % i for i in range(0, 4)]
+
         valid_rates = [
             300, 600, 1200, 2400, 4800, 9600,
             14400, 19200, 28800, 38400, 57600, 115200,

@@ -40,7 +40,7 @@ class Reader(Thread):
 
         if port is None:
             raise ValueError('`port` is a required argument')
-        if not re.match(r'\/dev\/ttyS[0-3]$', str(port)):
+        if not re.match(r'\/dev\/tty(ACM|S|USB)[0-3]$', str(port)):
             raise ValueError('`port` must be a Linux port (/dev/ttyS0-3)')
 
         valid_rates = [
