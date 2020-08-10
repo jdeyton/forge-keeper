@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "digital-forge-drone"
-version = "0.2.1"
+version = "0.3.2"
 description = "A drone implementation that sends sensor data to the forge.digital Keeper API."
 authors = ["Jordan Deyton <jordan.deyton@gmail.com>"]
 license = "MIT"

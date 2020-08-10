@@ -96,9 +96,10 @@ The program will exit if any of the following conditions are true:
         )
         sender = Sender(
             data_queue=data_queue,
-            url=config['url'] if 'url' in config else None,
             drone=config['drone'],
             archives=config['archives'],
+            url=config['url'] if 'url' in config else None,
+            server_cert=config['server_cert'] if 'server_cert' in config else None,
         )
     except ValueError as err:
         print('Error in config: ' + str(err), file=sys.stderr)

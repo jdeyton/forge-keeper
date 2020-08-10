@@ -5,6 +5,7 @@ an upstream server.
 """
 
 from collections.abc import Iterable
+from pathlib import Path
 import queue
 import sys
 from threading import Thread
@@ -23,7 +24,7 @@ class Sender(Thread):
     service.
     """
 
-    def __init__(self, data_queue=None, url=None, drone=None, archives=None, **kwargs):
+    def __init__(self, data_queue=None, url=None, drone=None, archives=None, server_cert=None, **kwargs):
         """
         The default constructor.
 
@@ -63,8 +64,13 @@ class Sender(Thread):
         self._archives = archives
         self._drone = drone
 
-        if url is not None:
+        # Apply a custom URL and SSL cert if specified.
+        if url:
             config = Configuration(host=url)
+            if server_cert:
+                if not Path(server_cert).is_file():
+                    raise ValueError('`server_cert` must be a regular file')
+                config.ssl_ca_cert = server_cert
             client = ApiClient(configuration=config)
             self._api = DroneApi(api_client=client)
         else:
