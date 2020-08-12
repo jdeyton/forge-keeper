@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "monitor"
+version = "0.1.0"
+description = "Examines data from the Forge Keeper."
+authors = ["Jordan Deyton <jordan.deyton@gmail.com>"]
+license = "MIT"
+packages = [ { from = "src", include = "monitor" } ]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.5.3"
+
+[tool.poetry.scripts]
+monitor = "monitor.__main__:main"
+
+[[tool.poetry.source]]
+name = "forge-pypi"
+url = "http://localhost:60001/simple/"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
