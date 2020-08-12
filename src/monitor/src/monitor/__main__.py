@@ -8,6 +8,8 @@ from datetime import datetime, timedelta
 import getpass
 import sys
 
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
@@ -54,18 +56,33 @@ def main(argv=None):
 
     # Query the relevant Events.
     # This could be simpler if we establish the 'relationship' in the ORM pkg.
+    humidity = {'times': [], 'values': []}
+    temp = {'times': [], 'values': []}
     with _connection(Session) as db:
         for record in db.query(Event.event_time, Event.event_value, Archive.units, Archive.name).\
                 join(Archive, Event.archive_uuid == Archive.archive_uuid).\
                 filter(Event.drone_uuid == drone).\
                 filter(Event.event_time >= data_start).\
                 order_by(Event.event_time.asc()):
-            print('Event: {}: {} ({} {})'.format(
-                record.event_time,
-                record.event_value,
-                record.units,
-                record.name
-            ))
+
+            # Store the data elsewhere for use.
+            store = temp
+            if record.name == 'humidity':
+                store = humidity
+            store['times'].append(record.event_time)
+            store['values'].append(record.event_value)
+
+    figure = make_subplots(specs=[[{"secondary_y": True}]])
+    figure.add_trace(go.Scatter(x=temp['times'], y=temp['values'], mode='lines', name='temperature'), secondary_y=False)
+    figure.add_trace(go.Scatter(x=humidity['times'], y=humidity['values'], mode='lines', name='humdity'), secondary_y=True)
+    figure.update_layout(
+        showlegend=True,
+        title_text='Temperature and Humidity',
+    )
+    figure.update_xaxes(title_text='Time')
+    figure.update_yaxes(title_text='Temperature', secondary_y=False)
+    figure.update_yaxes(title_text='Humidity', secondary_y=True)
+    figure.write_image("test.png")
 
 
 def _parse_args(argv):

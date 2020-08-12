@@ -10,6 +10,8 @@ packages = [ { from = "src", include = "monitor" } ]
 python = "^3.8"
 digital-forge-data-sql = "^0.1.0"
 psycopg2-binary = "^2.8.5"
+plotly = "^4.9.0"
+kaleido = "^0.0.3"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.5.3"
