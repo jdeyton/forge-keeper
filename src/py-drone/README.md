@@ -6,17 +6,9 @@ The current intention is for this client to read sensor data off a serial port, 
 
 ## How to Deploy
 
-### Setup
+### Configuration
 
-- Configure poetry to store the virtual environment in the current directory:
-  `poetry configure virtualenvs.in-project true`
-- Create a virtual environment: `poetry init`
-- Ensure the appropriate PyPI is configured in the `pyproject.toml`.
-- Add this package: `poetry add digital-forge-drone`
-
-### Configure the Drone
-
-Create `/etc/py-drone.conf` as a JSON file containing a single object with
+Create a `py-drone.conf` JSON file containing a single object with
 the below nested properties/objects:
 
 * **port:** The serial port, e.g., `/dev/tty(ACM|S|USB)[0-3]`.
@@ -29,10 +21,15 @@ the below nested properties/objects:
 * **url:** (optional) The URL to which data will be sent. If not specified, a
   default is used from the API library.
 
-Ensure the file is only readable by the root user.
+### Build and Deploy
 
-### Run
+Create the following secrets as necessary:
 
-```
-poetry run py-drone
-```
+- **forge-drone-conf:** Your `py-drone.conf` contents.
+- **forge-keeper-https-cert:** Your server's (self-signed) SSL cert.
+
+Go to the `docker` directory and do the following:
+
+- Create `pip.conf` with the necessary info to read packages from your PyPI.
+- Run `docker build --network=host -t forge-drone .`
+- Run `docker stack deploy -c drone.yml forge-drone`

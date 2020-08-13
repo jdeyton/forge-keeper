@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+
+    drone:
+        image: forge-drone
+        secrets:
+            - source: conf
+              target: /etc/py-drone.conf
+            - source: https-cert
+              target: /etc/ssl/certs/cert.pem
+
+secrets:
+    conf:
+        external: true
+        name: forge-drone-conf
+    https-cert:
+        external: true
+        name: forge-keeper-https-cert
