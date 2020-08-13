@@ -6,10 +6,21 @@ The current intention is for this client to read sensor data off a serial port, 
 
 ## How to Deploy
 
-### Configuration
+This container requires use of serial devices, a feature that is not supported
+by Docker Swarm. Thus we must use docker-compose, where secrets also have
+limited support.
 
-Create a `py-drone.conf` JSON file containing a single object with
-the below nested properties/objects:
+### Build
+
+Go to the `docker` directory and do the following:
+
+- Create `pip.conf` with the necessary info to read packages from your PyPI.
+- Run: `docker build --network=host -t forge-drone .`
+
+### Configure
+
+Create a `/etc/py-drone.conf` JSON file containing a single object with the
+below nested properties/objects:
 
 * **port:** The serial port, e.g., `/dev/tty(ACM|S|USB)[0-3]`.
 * **rate:** The modulating rate (bauds), commonly `9600`. This must match the
@@ -21,15 +32,11 @@ the below nested properties/objects:
 * **url:** (optional) The URL to which data will be sent. If not specified, a
   default is used from the API library.
 
-### Build and Deploy
+Ensure you have the SSL cert for your server for HTTPS communication at
+`/etc/ssl/certs/cert.pem`
 
-Create the following secrets as necessary:
+### Deploy
 
-- **forge-drone-conf:** Your `py-drone.conf` contents.
-- **forge-keeper-https-cert:** Your server's (self-signed) SSL cert.
-
-Go to the `docker` directory and do the following:
-
-- Create `pip.conf` with the necessary info to read packages from your PyPI.
-- Run `docker build --network=host -t forge-drone .`
-- Run `docker stack deploy -c drone.yml forge-drone`
+```
+docker-compose -f drone.yml -p forge-drone up
+```

@@ -3,6 +3,8 @@ version: '3.7'
 services:
 
     drone:
+        devices:
+            - "/dev/ttyUSB0:/dev/ttyUSB0"
         image: forge-drone
         secrets:
             - source: conf
@@ -12,8 +14,10 @@ services:
 
 secrets:
     conf:
-        external: true
-        name: forge-drone-conf
+        #external: true
+        #name: forge-drone-conf
+        file: /etc/py-drone.conf
     https-cert:
-        external: true
-        name: forge-keeper-https-cert
+        #external: true
+        #name: forge-keeper-https-cert
+        file: /etc/ssl/certs/cert.pem
